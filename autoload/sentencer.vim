@@ -10,7 +10,18 @@ function! s:strip(txt) abort
   return substitute(a:txt, '\%(^\s\+\|\s\+$\)', '', 'g')
 endfunction
 
-" TODO: keep blank lines
+function! s:paragraphs(lines) abort
+  let l:paras = [[]]
+  for l:line in a:lines
+    if l:line =~# '^\s*$'
+      let l:paras = add(l:paras, [])
+    else
+      let l:paras[-1] = add(l:paras[-1], l:line)
+    endif
+  endfor
+  return l:paras
+endfunction
+
 function! s:join(lines) abort
   return join(map(copy(a:lines), 's:strip(v:val)'), ' ')
 endfunction
@@ -56,14 +67,21 @@ function! sentencer#Format() abort
   let l:pos = getcurpos()
   let l:start = v:lnum
   let l:end = l:start + v:count - 1
-  let l:lines = getline(l:start, l:end)
+  let l:orig = getline(l:start, l:end)
   let l:indent = indent(l:start)
 
-  let l:joined = s:join(l:lines)
-  let l:split = map(s:split(l:joined), 's:indent(v:val, l:indent)')
+  let l:first = 1
+  let l:lines = []
+  for l:para in s:paragraphs(l:orig)
+    if !l:first
+      let l:lines += ['']
+    endif
+    let l:lines += map(s:split(s:join(l:para)), 's:indent(v:val, l:indent)')
+    let l:first = 0
+  endfor
 
   execute printf('silent %d,%ddelete _', l:start, l:end)
-  call append(l:start - 1, l:split)
+  call append(l:start - 1, l:lines)
 
   call setpos('.', l:pos)
   return 0
