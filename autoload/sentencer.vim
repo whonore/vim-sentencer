@@ -1,7 +1,6 @@
 let s:puncts = '.!?'
 let s:punct_pat = '[%s]\s'
-let s:maxlen = 80
-let s:over = s:maxlen / 10
+let s:maxlen = 0 < &textwidth ? &textwidth : 80
 
 function! s:indent(txt, indent) abort
   return repeat(' ', a:indent) . a:txt
@@ -20,14 +19,14 @@ endfunction
 function! s:nextBreak(line) abort
   let l:puncts = printf(s:punct_pat, get(g:, 'sentencer_punctuation', s:puncts))
   let l:maxlen = get(g:, 'sentencer_max_length', s:maxlen)
-  let l:over = get(g:, 'sentencer_overflow', s:over)
+  let l:over = get(g:, 'sentencer_overflow', l:maxlen / 10)
 
   let l:idx = match(a:line, l:puncts)
-  if l:idx != -1 && l:idx < l:maxlen - 1
+  if l:idx != -1 && (l:maxlen == -1 || l:idx < l:maxlen + l:over - 1)
     return l:idx
   endif
 
-  if len(a:line) < l:maxlen + l:over
+  if l:maxlen == -1 || len(a:line) < l:maxlen + l:over
     return -1
   endif
 
@@ -63,7 +62,7 @@ function! sentencer#Format() abort
   let l:joined = s:join(l:lines)
   let l:split = map(s:split(l:joined), 's:indent(v:val, l:indent)')
 
-  execute printf('%d,%ddelete _', l:start, l:end)
+  execute printf('silent %d,%ddelete _', l:start, l:end)
   call append(l:start - 1, l:split)
 
   call setpos('.', l:pos)
