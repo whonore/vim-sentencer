@@ -80,8 +80,10 @@ function! sentencer#Format() abort
     let l:first = 0
   endfor
 
-  execute printf('silent %d,%ddelete _', l:start, l:end)
-  call append(l:start - 1, l:lines)
+  if l:orig != l:lines
+    execute printf('silent %d,%ddelete _', l:start, l:end)
+    call append(l:start - 1, l:lines)
+  endif
 
   call setpos('.', l:pos)
   return 0
