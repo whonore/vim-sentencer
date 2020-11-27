@@ -32,15 +32,18 @@ function! s:nextBreak(line) abort
   let l:maxlen = get(g:, 'sentencer_max_length', s:maxlen)
   let l:over = get(g:, 'sentencer_overflow', l:maxlen / 10)
 
+  " Look for punctuation before the maximum line length.
   let l:idx = match(a:line, l:puncts)
   if l:idx != -1 && (l:maxlen == -1 || l:idx < l:maxlen + l:over - 1)
     return l:idx
   endif
 
+  " The line is shorter than the maximum line length.
   if l:maxlen == -1 || len(a:line) < l:maxlen + l:over
     return -1
   endif
 
+  " Look for the last space before the maximum line length.
   let l:idx = strridx(a:line, ' ', l:maxlen - 1)
   if l:idx != -1
     return l:idx
