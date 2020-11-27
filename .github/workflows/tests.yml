@@ -12,6 +12,7 @@ jobs:
       uses: rhysd/action-setup-vim@v1
       id: vim
     - name: Install Vader
+      uses: actions/checkout@v2
       with:
         repository: junegunn/vader.vim
         path: .vim/bundle/vader.vim
