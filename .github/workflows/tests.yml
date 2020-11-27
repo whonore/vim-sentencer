@@ -15,9 +15,11 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: junegunn/vader.vim
-        path: .vim/bundle/vader.vim
+        path: vader.vim
     - name: Run tests
+      env:
+        VADER_PATH: vader.vim
       run: |
         vim --version
-        cd test
+        cd tests
         ./runtest.sh
