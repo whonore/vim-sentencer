@@ -82,7 +82,12 @@ function! sentencer#Format() abort
 
   if l:orig != l:lines
     execute printf('silent %d,%ddelete _', l:start, l:end)
-    call append(l:start - 1, l:lines)
+    if line('$') != 1
+      call append(l:start - 1, l:lines)
+    else
+      " append adds an extra newline if the file is empty
+      call setline(l:start, l:lines)
+    endif
   endif
 
   call setpos('.', l:pos)
