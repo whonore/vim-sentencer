@@ -1,0 +1,123 @@
+Given markdown (one-sentence-short):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+Execute (one-sentence-short):
+  let g:sentencer_max_length = 80
+  let g:sentencer_overflow = 0
+
+Do (one-sentence-short):
+  gqG
+
+Expect markdown (one-sentence-short):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+Given markdown (one-sentence-long):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+Execute (one-sentence-long):
+  let g:sentencer_max_length = 50
+  let g:sentencer_overflow = 0
+
+Do (one-sentence-long):
+  gqG
+
+Expect markdown (one-sentence-long):
+  Lorem ipsum dolor sit amet, consectetur
+  adipiscing elit.
+
+Given markdown (one-sentence-overflow):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+Execute (one-sentence-overflow):
+  let g:sentencer_max_length = 52
+  let g:sentencer_overflow = 5
+
+Do (one-sentence-overflow):
+  gqG
+
+Expect markdown (one-sentence-long):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+Given markdown (two-sentence-short):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+Execute (two-sentence-short):
+  let g:sentencer_max_length = 200
+  let g:sentencer_overflow = 0
+
+Do (two-sentence-short):
+  gqG
+
+Expect markdown (two-sentence-short):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+Given markdown (two-sentence-long):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+Execute (two-sentence-long):
+  let g:sentencer_max_length = 50
+  let g:sentencer_overflow = 0
+
+Do (two-sentence-long):
+  gqG
+
+Expect markdown (two-sentence-long):
+  Lorem ipsum dolor sit amet, consectetur
+  adipiscing elit.
+  Nam eleifend mauris et lectus rhoncus, at feugiat
+  sapien euismod.
+
+Given markdown (two-paragraph):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+  Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+Execute (two-paragraph):
+  let g:sentencer_max_length = 52
+  let g:sentencer_overflow = 5
+
+Do (two-paragraph):
+  gqG
+
+Expect markdown (two-paragraph):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+  Nam eleifend mauris et lectus rhoncus, at feugiat
+  sapien euismod.
+
+Given markdown (two-paragraph-multi-blank):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+
+  Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+Execute (two-paragraph-multi-blank):
+  let g:sentencer_max_length = 50
+  let g:sentencer_overflow = 0
+
+Do (two-paragraph-multi-blank):
+  gqG
+
+Expect markdown (two-paragraph-multi-blank):
+  Lorem ipsum dolor sit amet, consectetur
+  adipiscing elit.
+
+
+  Nam eleifend mauris et lectus rhoncus, at feugiat
+  sapien euismod.
+
+Given markdown (custom-punctuation):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+Execute (custom-punctuation):
+  let g:sentencer_max_length = 80
+  let g:sentencer_overflow = 0
+  let g:sentencer_punctuation = '.!?,'
+
+Do (custom-punctuation):
+  gqG
+
+Expect markdown (custom-punctuation):
+  Lorem ipsum dolor sit amet,
+  consectetur adipiscing elit.
