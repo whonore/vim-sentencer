@@ -18,7 +18,7 @@ jobs:
         path: vader.vim
     - name: Run tests
       env:
-        VADER_PATH: vader.vim
+        VADER_PATH: ../vader.vim
       run: |
         vim --version
         cd tests
