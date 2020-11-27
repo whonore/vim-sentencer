@@ -1,0 +1,22 @@
+name: Tests
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Vim
+      uses: rhysd/action-setup-vim@v1
+      id: vim
+    - name: Install Vader
+      with:
+        repository: junegunn/vader.vim
+        path: .vim/bundle/vader.vim
+    - name: Run tests
+      run: |
+        vim --version
+        cd test
+        ./runtest.sh
