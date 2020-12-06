@@ -28,7 +28,7 @@ function! s:join(lines) abort
   return join(map(copy(a:lines), 's:strip(v:val)'), ' ')
 endfunction
 
-" TODO: ignore abbreviations, numbered lists?
+" TODO: break even when maxlen is shorter than a word in the line
 function! s:nextBreak(line, opts) abort
   let l:puncts = a:opts['puncts']
   let l:maxlen = a:opts['maxlen']
