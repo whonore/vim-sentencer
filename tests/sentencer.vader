@@ -78,6 +78,21 @@ Expect markdown (two-sentence-long):
   Nam eleifend mauris et lectus rhoncus, at feugiat
   sapien euismod.
 
+Given markdown (two-sentence-no-space):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+Execute (two-sentence-no-space):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_max_length = 200
+  let g:sentencer_overflow = 0
+
+Do (two-sentence-no-space):
+  gqG
+
+Expect markdown (two-sentence-no-space):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
 Given markdown (two-paragraph):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
@@ -153,3 +168,86 @@ Expect markdown (ignore):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
   Nam eleifend mauris et lectus rhoncus,
   at feugiat sapien euismod.
+
+Given markdown (no-max-len):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+Execute (no-max-len):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_max_length = -1
+  let g:sentencer_overflow = 0
+
+Do (no-max-len):
+  gqG
+
+Expect markdown (no-max-len):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+Given markdown (big):
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit. Ut eleifend purus felis, vitae dictum
+  purus porta sed. Morbi nec luctus nisl, quis fringilla quam. Aenean ultricies luctus sem sed commodo. Nulla varius finibus erat id
+  commodo. Donec volutpat metus libero, a sollicitudin felis sollicitudin et. Etiam vehicula velit sed placerat faucibus. Pellentesque cursus arcu vitae diam elementum rutrum. Phasellus tristique turpis sapien, ac consequat dolor placerat congue. Donec convallis justo orci, varius tincidunt turpis consequat a. Phasellus sed lectus eu lectus efficitur gravida. Sed fringilla quis arcu id faucibus.
+  Suspendisse in fermentum lacus. Vivamus imperdiet mauris nec nisi ornare, sed fringilla risus dictum. Aenean semper lectus
+  efficitur magna iaculis volutpat. Cras ullamcorper lacinia rhoncus. Ut sit amet imperdiet lectus.
+
+  Vivamus
+  venenatis,
+  tellus nec placerat mollis, risus turpis imperdiet ante, ut tincidunt sapien ex nec erat. Morbi
+  velit turpis, efficitur ac risus
+  vel, ultrices feugiat tortor. In hac habitasse platea dictumst. Pellentesque mollis ex eros, sed vulputate arcu pharetra ullamcorper. Etiam nunc augue, rhoncus consectetur eleifend
+  eu, cursus sit amet augue. Sed sodales semper mauris sit amet finibus. Maecenas pharetra
+  finibus dui nec pharetra.
+
+Execute (big):
+  let g:sentencer_punctuation = '.,'
+  let g:sentencer_ignore = ['amet', 'vel']
+  let g:sentencer_max_length = 50
+  let g:sentencer_overflow = 4
+
+Do (big):
+  gqG
+
+Expect markdown (big):
+  Lorem ipsum dolor sit amet, consectetur
+  adipiscing elit.
+  Ut eleifend purus felis,
+  vitae dictum purus porta sed.
+  Morbi nec luctus nisl,
+  quis fringilla quam.
+  Aenean ultricies luctus sem sed commodo.
+  Nulla varius finibus erat id commodo.
+  Donec volutpat metus libero,
+  a sollicitudin felis sollicitudin et.
+  Etiam vehicula velit sed placerat faucibus.
+  Pellentesque cursus arcu vitae diam elementum rutrum.
+  Phasellus tristique turpis sapien,
+  ac consequat dolor placerat congue.
+  Donec convallis justo orci,
+  varius tincidunt turpis consequat a.
+  Phasellus sed lectus eu lectus efficitur gravida.
+  Sed fringilla quis arcu id faucibus.
+  Suspendisse in fermentum lacus.
+  Vivamus imperdiet mauris nec nisi ornare,
+  sed fringilla risus dictum.
+  Aenean semper lectus efficitur magna iaculis
+  volutpat.
+  Cras ullamcorper lacinia rhoncus.
+  Ut sit amet imperdiet lectus.
+
+  Vivamus venenatis,
+  tellus nec placerat mollis,
+  risus turpis imperdiet ante,
+  ut tincidunt sapien ex nec erat.
+  Morbi velit turpis,
+  efficitur ac risus vel, ultrices feugiat tortor.
+  In hac habitasse platea dictumst.
+  Pellentesque mollis ex eros,
+  sed vulputate arcu pharetra ullamcorper.
+  Etiam nunc augue,
+  rhoncus consectetur eleifend eu,
+  cursus sit amet augue.
+  Sed sodales semper mauris sit amet finibus.
+  Maecenas pharetra finibus dui nec pharetra.
