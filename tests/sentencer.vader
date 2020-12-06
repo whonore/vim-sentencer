@@ -2,6 +2,8 @@ Given markdown (one-sentence-short):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Execute (one-sentence-short):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
   let g:sentencer_max_length = 80
   let g:sentencer_overflow = 0
 
@@ -15,6 +17,8 @@ Given markdown (one-sentence-long):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Execute (one-sentence-long):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
   let g:sentencer_max_length = 50
   let g:sentencer_overflow = 0
 
@@ -29,6 +33,8 @@ Given markdown (one-sentence-overflow):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Execute (one-sentence-overflow):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
   let g:sentencer_max_length = 52
   let g:sentencer_overflow = 5
 
@@ -42,6 +48,8 @@ Given markdown (two-sentence-short):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (two-sentence-short):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
   let g:sentencer_max_length = 200
   let g:sentencer_overflow = 0
 
@@ -56,6 +64,8 @@ Given markdown (two-sentence-long):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (two-sentence-long):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
   let g:sentencer_max_length = 50
   let g:sentencer_overflow = 0
 
@@ -74,6 +84,8 @@ Given markdown (two-paragraph):
   Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (two-paragraph):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
   let g:sentencer_max_length = 52
   let g:sentencer_overflow = 5
 
@@ -93,6 +105,8 @@ Given markdown (two-paragraph-multi-blank):
   Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (two-paragraph-multi-blank):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
   let g:sentencer_max_length = 50
   let g:sentencer_overflow = 0
 
@@ -111,9 +125,10 @@ Given markdown (custom-punctuation):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Execute (custom-punctuation):
+  let g:sentencer_punctuation = '.,'
+  let g:sentencer_ignore = []
   let g:sentencer_max_length = 80
   let g:sentencer_overflow = 0
-  let g:sentencer_punctuation = '.!?,'
 
 Do (custom-punctuation):
   gqG
@@ -121,3 +136,20 @@ Do (custom-punctuation):
 Expect markdown (custom-punctuation):
   Lorem ipsum dolor sit amet,
   consectetur adipiscing elit.
+
+Given markdown (ignore):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+Execute (ignore):
+  let g:sentencer_punctuation = '.,'
+  let g:sentencer_ignore = ['amet']
+  let g:sentencer_max_length = 80
+  let g:sentencer_overflow = 0
+
+Do (ignore):
+  gqG
+
+Expect markdown (ignore):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  Nam eleifend mauris et lectus rhoncus,
+  at feugiat sapien euismod.

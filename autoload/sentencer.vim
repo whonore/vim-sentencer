@@ -1,5 +1,7 @@
 let s:puncts = '.!?'
+let s:ignore = ['i.e', 'e.g', 'Dr', 'Mr', 'Mrs', 'Ms']
 let s:punct_pat = '[%s]\s'
+let s:punct_ignore_pat = '\V\%%(%s\)\@%d<!\[%s]%\s'
 let s:maxlen = 0 < &textwidth ? &textwidth : 80
 
 function! s:indent(txt, indent) abort
@@ -69,7 +71,18 @@ endfunction
 function! sentencer#Format() abort
   let l:opts = {}
   let l:puncts = get(g:, 'sentencer_punctuation', s:puncts)
-  let l:opts['puncts'] = printf(s:punct_pat, l:puncts)
+  let l:ignore = get(g:, 'sentencer_ignore', s:ignore)
+  if l:ignore != []
+    let l:max_ignore = max(map(copy(l:ignore), 'len(v:val)'))
+    let l:opts['puncts'] = printf(
+      \ s:punct_ignore_pat,
+      \ join(l:ignore, '\|'),
+      \ l:max_ignore,
+      \ l:puncts
+    \)
+  else
+    let l:opts['puncts'] = printf(s:punct_pat, l:puncts)
+  endif
   let l:opts['maxlen'] = get(g:, 'sentencer_max_length', s:maxlen)
   let l:opts['over'] = get(g:, 'sentencer_overflow', l:opts['maxlen'] / 10)
 
