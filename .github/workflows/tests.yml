@@ -20,6 +20,5 @@ jobs:
       env:
         VADER_PATH: ../vader.vim
       run: |
-        vim --version
         cd tests
         ./runtest.sh
