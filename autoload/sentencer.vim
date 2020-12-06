@@ -27,10 +27,10 @@ function! s:join(lines) abort
 endfunction
 
 " TODO: ignore abbreviations, numbered lists?
-function! s:nextBreak(line) abort
-  let l:puncts = printf(s:punct_pat, get(g:, 'sentencer_punctuation', s:puncts))
-  let l:maxlen = get(g:, 'sentencer_max_length', s:maxlen)
-  let l:over = get(g:, 'sentencer_overflow', l:maxlen / 10)
+function! s:nextBreak(line, opts) abort
+  let l:puncts = a:opts['puncts']
+  let l:maxlen = a:opts['maxlen']
+  let l:over = a:opts['over']
 
   " Look for punctuation before the maximum line length.
   let l:idx = match(a:line, l:puncts)
@@ -52,13 +52,13 @@ function! s:nextBreak(line) abort
   return -1
 endfunction
 
-function! s:split(line) abort
+function! s:split(line, opts) abort
   let l:lines = []
   let l:line = a:line
   let l:break = 0
 
   while l:break != -1 && l:line !=# ''
-    let l:break = s:nextBreak(l:line)
+    let l:break = s:nextBreak(l:line, a:opts)
     let l:lines = add(l:lines, s:strip(l:line[:l:break]))
     let l:line = s:strip(l:line[l:break + 1:])
   endwhile
@@ -67,6 +67,12 @@ function! s:split(line) abort
 endfunction
 
 function! sentencer#Format() abort
+  let l:opts = {}
+  let l:puncts = get(g:, 'sentencer_punctuation', s:puncts)
+  let l:opts['puncts'] = printf(s:punct_pat, l:puncts)
+  let l:opts['maxlen'] = get(g:, 'sentencer_max_length', s:maxlen)
+  let l:opts['over'] = get(g:, 'sentencer_overflow', l:opts['maxlen'] / 10)
+
   let l:pos = getcurpos()
   let l:start = v:lnum
   let l:end = l:start + v:count - 1
@@ -79,7 +85,7 @@ function! sentencer#Format() abort
     if !l:first
       let l:lines += ['']
     endif
-    let l:lines += map(s:split(s:join(l:para)), 's:indent(v:val, l:indent)')
+    let l:lines += map(s:split(s:join(l:para), l:opts), 's:indent(v:val, l:indent)')
     let l:first = 0
   endfor
 
