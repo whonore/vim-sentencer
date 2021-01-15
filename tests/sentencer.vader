@@ -251,3 +251,30 @@ Expect markdown (big):
   cursus sit amet augue.
   Sed sodales semper mauris sit amet finibus.
   Maecenas pharetra finibus dui nec pharetra.
+
+Given markdown (long-word):
+  Loremipsum dolor
+
+  Loremipsum dolorsitamet
+
+  Lorem ipsumdolor sitamet
+
+Execute (long-word):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_max_length = 10
+  let g:sentencer_overflow = 0
+
+Do (long-word):
+  gqG
+
+Expect markdown (long-word):
+  Loremipsum
+  dolor
+
+  Loremipsum
+  dolorsitamet
+
+  Lorem
+  ipsumdolor
+  sitamet

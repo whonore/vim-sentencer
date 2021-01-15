@@ -28,7 +28,6 @@ function! s:join(lines) abort
   return join(map(copy(a:lines), 's:strip(v:val)'), ' ')
 endfunction
 
-" TODO: break even when maxlen is shorter than a word in the line
 function! s:nextBreak(line, opts) abort
   let l:puncts = a:opts['puncts']
   let l:maxlen = a:opts['maxlen']
@@ -49,6 +48,12 @@ function! s:nextBreak(line, opts) abort
   let l:idx = strridx(a:line, ' ', l:maxlen - 1)
   if l:idx != -1
     return l:idx
+  else
+    " Check if first space is over maximum line length.
+    let l:idx = stridx(a:line, ' ')
+    if l:maxlen <= l:idx
+      return l:idx
+    endif
   endif
 
   return -1
