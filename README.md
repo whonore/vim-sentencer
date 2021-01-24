@@ -1,4 +1,7 @@
 # vim-sentencer
+
+[![Build Status](https://github.com/whonore/vim-sentencer/workflows/Tests/badge.svg?branch=master)](https://github.com/whonore/vim-sentencer/actions?query=workflow%3ATests)
+
 One sentence per line and wrap long lines.
 
 Configuration:
