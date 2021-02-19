@@ -2,12 +2,13 @@ let s:t_float = type(0.1)
 
 function! s:options() abort
   let l:o = {}
+  let l:ignore = g:sentencer_ignore + get(b:, 'sentencer_ignore', [])
   let l:o.punctuation = g:sentencer_ignore == []
     \ ? printf('[%s]\s', g:sentencer_punctuation)
     \ : printf(
       \ '\V\%%(%s\)\@%d<!\[%s]\s',
-      \ join(g:sentencer_ignore, '\|'),
-      \ max(map(copy(g:sentencer_ignore), 'len(v:val)')),
+      \ join(l:ignore, '\|'),
+      \ max(map(copy(l:ignore), 'len(v:val)')),
       \ g:sentencer_punctuation
     \)
   let l:o.max_length = g:sentencer_max_length
