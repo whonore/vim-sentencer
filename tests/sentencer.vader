@@ -276,7 +276,7 @@ Given markdown (long-word):
 Execute (long-word):
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 10
+  let g:sentencer_max_length = 5
   let g:sentencer_overflow = 0
 
 Do (long-word):
