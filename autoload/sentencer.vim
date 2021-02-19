@@ -1,8 +1,21 @@
-let s:puncts = '.!?'
-let s:ignore = ['i.e', 'e.g', 'Dr', 'Mr', 'Mrs', 'Ms']
-let s:punct_pat = '[%s]\s'
-let s:punct_ignore_pat = '\V\%%(%s\)\@%d<!\[%s]%\s'
-let s:maxlen = 0 < &textwidth ? &textwidth : 80
+let s:t_float = type(0.1)
+
+function! s:options() abort
+  let l:o = {}
+  let l:o.punctuation = g:sentencer_ignore == []
+    \ ? printf('[%s]\s', g:sentencer_punctuation)
+    \ : printf(
+      \ '\V\%%(%s\)\@%d<!\[%s]%\s',
+      \ join(g:sentencer_ignore, '\|'),
+      \ max(map(copy(g:sentencer_ignore), 'len(v:val)')),
+      \ g:sentencer_punctuation
+    \)
+  let l:o.max_length = g:sentencer_max_length
+  let l:o.overflow = type(g:sentencer_overflow) == s:t_float
+    \ ? float2nr(round(g:sentencer_overflow * g:sentencer_max_length))
+    \ : g:sentencer_overflow
+  return l:o
+endfunction
 
 function! s:indent(txt, indent) abort
   return repeat(' ', a:indent) . a:txt
@@ -28,30 +41,28 @@ function! s:join(lines) abort
   return join(map(copy(a:lines), 's:strip(v:val)'), ' ')
 endfunction
 
-function! s:nextBreak(line, opts) abort
-  let l:puncts = a:opts['puncts']
-  let l:maxlen = a:opts['maxlen']
-  let l:over = a:opts['over']
+function! s:nextBreak(line, o) abort
+  let l:no_max = a:o.max_length < 0
 
   " Look for punctuation before the maximum line length.
-  let l:idx = match(a:line, l:puncts)
-  if l:idx != -1 && (l:maxlen == -1 || l:idx < l:maxlen + l:over - 1)
+  let l:idx = match(a:line, a:o.punctuation)
+  if l:idx != -1 && (l:no_max || l:idx < a:o.max_length + a:o.overflow - 1)
     return l:idx
   endif
 
   " The line is shorter than the maximum line length.
-  if l:maxlen == -1 || len(a:line) < l:maxlen + l:over
+  if l:no_max || len(a:line) < a:o.max_length + a:o.overflow
     return -1
   endif
 
   " Look for the last space before the maximum line length.
-  let l:idx = strridx(a:line, ' ', l:maxlen - 1)
+  let l:idx = strridx(a:line, ' ', a:o.max_length - 1)
   if l:idx != -1
     return l:idx
   else
     " Check if first space is over maximum line length.
     let l:idx = stridx(a:line, ' ')
-    if l:maxlen <= l:idx
+    if a:o.max_length <= l:idx
       return l:idx
     endif
   endif
@@ -59,13 +70,13 @@ function! s:nextBreak(line, opts) abort
   return -1
 endfunction
 
-function! s:split(line, opts) abort
+function! s:split(line, o) abort
   let l:lines = []
   let l:line = a:line
   let l:break = 0
 
   while l:break != -1 && l:line !=# ''
-    let l:break = s:nextBreak(l:line, a:opts)
+    let l:break = s:nextBreak(l:line, a:o)
     let l:lines = add(l:lines, s:strip(l:line[:l:break]))
     let l:line = s:strip(l:line[l:break + 1:])
   endwhile
@@ -74,23 +85,7 @@ function! s:split(line, opts) abort
 endfunction
 
 function! sentencer#Format() abort
-  let l:opts = {}
-  let l:puncts = get(g:, 'sentencer_punctuation', s:puncts)
-  let l:ignore = get(g:, 'sentencer_ignore', s:ignore)
-  if l:ignore != []
-    let l:max_ignore = max(map(copy(l:ignore), 'len(v:val)'))
-    let l:opts['puncts'] = printf(
-      \ s:punct_ignore_pat,
-      \ join(l:ignore, '\|'),
-      \ l:max_ignore,
-      \ l:puncts
-    \)
-  else
-    let l:opts['puncts'] = printf(s:punct_pat, l:puncts)
-  endif
-  let l:opts['maxlen'] = get(g:, 'sentencer_max_length', s:maxlen)
-  let l:opts['over'] = get(g:, 'sentencer_overflow', l:opts['maxlen'] / 10)
-
+  let l:o = s:options()
   let l:pos = getcurpos()
   let l:start = v:lnum
   let l:end = l:start + v:count - 1
@@ -103,7 +98,7 @@ function! sentencer#Format() abort
     if !l:first
       let l:lines += ['']
     endif
-    let l:lines += map(s:split(s:join(l:para), l:opts), 's:indent(v:val, l:indent)')
+    let l:lines += map(s:split(s:join(l:para), l:o), 's:indent(v:val, l:indent)')
     let l:first = 0
   endfor
 

@@ -29,19 +29,34 @@ Expect markdown (one-sentence-long):
   Lorem ipsum dolor sit amet, consectetur
   adipiscing elit.
 
-Given markdown (one-sentence-overflow):
+Given markdown (one-sentence-overflow-int):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Execute (one-sentence-overflow):
+Execute (one-sentence-overflow-int):
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 52
   let g:sentencer_overflow = 5
 
-Do (one-sentence-overflow):
+Do (one-sentence-overflow-int):
   gqG
 
-Expect markdown (one-sentence-long):
+Expect markdown (one-sentence-overflow-int):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+Given markdown (one-sentence-overflow-float):
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+Execute (one-sentence-overflow-float):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_max_length = 52
+  let g:sentencer_overflow = 0.1
+
+Do (one-sentence-overflow-float):
+  gqG
+
+Expect markdown (one-sentence-overflow-float):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Given markdown (two-sentence-short):
