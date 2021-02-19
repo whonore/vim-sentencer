@@ -5,7 +5,7 @@ function! s:options() abort
   let l:o.punctuation = g:sentencer_ignore == []
     \ ? printf('[%s]\s', g:sentencer_punctuation)
     \ : printf(
-      \ '\V\%%(%s\)\@%d<!\[%s]%\s',
+      \ '\V\%%(%s\)\@%d<!\[%s]\s',
       \ join(g:sentencer_ignore, '\|'),
       \ max(map(copy(g:sentencer_ignore), 'len(v:val)')),
       \ g:sentencer_punctuation
