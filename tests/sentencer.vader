@@ -26,8 +26,8 @@ Do (one-sentence-long):
   gqG
 
 Expect markdown (one-sentence-long):
-  Lorem ipsum dolor sit amet, consectetur
-  adipiscing elit.
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
 
 Given markdown (one-sentence-overflow-int):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -88,8 +88,8 @@ Do (two-sentence-long):
   gqG
 
 Expect markdown (two-sentence-long):
-  Lorem ipsum dolor sit amet, consectetur
-  adipiscing elit.
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
   Nam eleifend mauris et lectus rhoncus, at feugiat
   sapien euismod.
 
@@ -144,8 +144,8 @@ Do (two-paragraph-multi-blank):
   gqG
 
 Expect markdown (two-paragraph-multi-blank):
-  Lorem ipsum dolor sit amet, consectetur
-  adipiscing elit.
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
 
 
   Nam eleifend mauris et lectus rhoncus, at feugiat
@@ -226,8 +226,8 @@ Do (big):
   gqG
 
 Expect markdown (big):
-  Lorem ipsum dolor sit amet, consectetur
-  adipiscing elit.
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
   Ut eleifend purus felis,
   vitae dictum purus porta sed.
   Morbi nec luctus nisl,
@@ -247,8 +247,7 @@ Expect markdown (big):
   Suspendisse in fermentum lacus.
   Vivamus imperdiet mauris nec nisi ornare,
   sed fringilla risus dictum.
-  Aenean semper lectus efficitur magna iaculis
-  volutpat.
+  Aenean semper lectus efficitur magna iaculis volutpat.
   Cras ullamcorper lacinia rhoncus.
   Ut sit amet imperdiet lectus.
 
@@ -293,3 +292,52 @@ Expect markdown (long-word):
   Lorem
   ipsumdolor
   sitamet
+
+Given markdown (max-len-inclusive):
+  1 3 5.
+
+  1 3 56
+
+  1 3 56.
+
+  1 3 567
+
+  1 3 5. 8.
+
+  12345 7
+
+  123456 8
+
+  1234567 8
+
+Execute (max-len-inclusive):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_max_length = 6
+  let g:sentencer_overflow = 0
+
+Do (max-len-inclusive):
+  gqG
+
+Expect markdown (max-len-inclusive):
+  1 3 5.
+
+  1 3 56
+
+  1 3
+  56.
+
+  1 3
+  567
+
+  1 3 5.
+  8.
+
+  12345
+  7
+
+  123456
+  8
+
+  1234567
+  8

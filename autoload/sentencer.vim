@@ -44,27 +44,27 @@ endfunction
 function! s:nextBreak(line, o) abort
   let l:no_max = a:o.max_length < 0
 
-  " Look for punctuation before the maximum line length.
+  " The first punctuation before or at the maximum line length.
   let l:idx = match(a:line, a:o.punctuation)
-  if l:idx != -1 && (l:no_max || l:idx < a:o.max_length + a:o.overflow - 1)
+  if l:idx != -1 && (l:no_max || l:idx <= a:o.max_length + a:o.overflow)
     return l:idx
   endif
 
-  " The line is shorter than the maximum line length.
-  if l:no_max || len(a:line) < a:o.max_length + a:o.overflow
+  " The line is not longer than the maximum line length.
+  if l:no_max || len(a:line) <= a:o.max_length + a:o.overflow
     return -1
   endif
 
-  " Look for the last space before the maximum line length.
-  let l:idx = strridx(a:line, ' ', a:o.max_length - 1)
+  " The last space before or at the maximum line length.
+  let l:idx = strridx(a:line, ' ', a:o.max_length)
   if l:idx != -1
     return l:idx
-  else
-    " Check if first space is over maximum line length.
-    let l:idx = stridx(a:line, ' ')
-    if a:o.max_length <= l:idx
-      return l:idx
-    endif
+  endif
+
+  " The first space after the maximum line length.
+  let l:idx = stridx(a:line, ' ')
+  if a:o.max_length < l:idx
+    return l:idx
   endif
 
   return -1
