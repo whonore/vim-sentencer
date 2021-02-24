@@ -19,3 +19,5 @@ augroup sentencer
     execute printf('autocmd FileType %s setlocal formatexpr=sentencer#Format()', s:ft)
   endfor
 augroup END
+
+command! -nargs=* SentencerBind call sentencer#bind(<f-args>)

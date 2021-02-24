@@ -341,3 +341,52 @@ Expect markdown (max-len-inclusive):
 
   1234567
   8
+
+Given markdown (bound):
+  Lorem ipsum dolor sit  amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+Execute (bound):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_max_length = 25
+  let g:sentencer_overflow = 0
+  let b:sentencer_bound = {
+    \ '\V\<sit\zs\s\+\zeamet\>': 1,
+    \ '\V\<consectetur\zs\s\+\zeadipiscing\>': 2,
+    \ '\V\<elit.\zs\s\+\zeNam\>': 3
+  \}
+
+Do (bound):
+  gqG
+
+Expect markdown (bound):
+  Lorem ipsum dolor
+  sit  amet,
+  consectetur adipiscing
+  elit. Nam eleifend mauris
+  et lectus rhoncus, at
+  feugiat sapien euismod.
+
+Given markdown (bind):
+  Lorem ipsum dolor sit  amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+Execute (bind):
+  let b:sentencer_bound = {}
+
+  call sentencer#bind(1, 22)
+  call cursor(1, 41)
+  SentencerBind
+  SentencerBind 1 56
+
+  Assert has_key(b:sentencer_bound, '\V\<sit\zs\s\+\zeamet\>')
+  Assert has_key(b:sentencer_bound, '\V\<consectetur\zs\s\+\zeadipiscing\>')
+  Assert has_key(b:sentencer_bound, '\V\<elit.\zs\s\+\zeNam\>')
+
+  call sentencer#bind(1, 22)
+  call cursor(1, 41)
+  SentencerBind
+  SentencerBind 1 56
+
+  Assert !has_key(b:sentencer_bound, '\V\<sit\zs\s\+\zeamet\>')
+  Assert !has_key(b:sentencer_bound, '\V\<consectetur\zs\s\+\zeadipiscing\>')
+  Assert !has_key(b:sentencer_bound, '\V\<elit.\zs\s\+\zeNam\>')

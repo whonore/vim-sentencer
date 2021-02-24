@@ -1,15 +1,19 @@
+scriptencoding utf-8
 let s:t_float = type(0.1)
 
 function! s:options() abort
   let l:o = {}
   let l:ignore = g:sentencer_ignore + get(b:, 'sentencer_ignore', [])
+  let l:o.space = '\s'
+  let l:o.bound = keys(get(b:, 'sentencer_bound', {}))
   let l:o.punctuation = g:sentencer_ignore == []
-    \ ? printf('[%s]\s', g:sentencer_punctuation)
+    \ ? printf('[%s]%s', g:sentencer_punctuation, l:o.space)
     \ : printf(
-      \ '\V\%%(%s\)\@%d<!\[%s]\s',
+      \ '\V\%%(%s\)\@%d<!\[%s]%s',
       \ join(l:ignore, '\|'),
       \ max(map(copy(l:ignore), 'len(v:val)')),
-      \ g:sentencer_punctuation
+      \ g:sentencer_punctuation,
+      \ l:o.space
     \)
   let l:o.max_length = g:sentencer_max_length
   let l:o.overflow = type(g:sentencer_overflow) == s:t_float
@@ -44,27 +48,31 @@ endfunction
 
 function! s:nextBreak(line, o) abort
   let l:no_max = a:o.max_length < 0
+  let l:line = a:line
+  for l:pat in a:o.bound
+    let l:line = substitute(l:line, l:pat, '~', 'g')
+  endfor
 
   " The first punctuation before or at the maximum line length.
-  let l:line = l:no_max ? a:line : a:line[:a:o.max_length + a:o.overflow]
-  let l:idx = match(l:line, a:o.punctuation)
+  let l:maxline = l:no_max ? l:line : l:line[:a:o.max_length + a:o.overflow]
+  let l:idx = match(l:maxline, a:o.punctuation)
   if l:idx != -1
     return l:idx
   endif
 
   " The line is not longer than the maximum line length.
-  if l:no_max || len(a:line) <= a:o.max_length + a:o.overflow
+  if l:no_max || len(l:line) <= a:o.max_length + a:o.overflow
     return -1
   endif
 
   " The last space before or at the maximum line length.
-  let l:idx = match(a:line[:a:o.max_length], '.*\zs ')
+  let l:idx = match(l:line[:a:o.max_length], '.*\zs' . a:o.space)
   if l:idx != -1
     return l:idx
   endif
 
   " The first space after the maximum line length.
-  let l:idx = match(a:line, ' ', a:o.max_length + 1)
+  let l:idx = match(l:line, ' ', a:o.max_length + 1)
   if l:idx != -1
     return l:idx
   endif
@@ -116,4 +124,26 @@ function! sentencer#Format() abort
 
   call setpos('.', l:pos)
   return 0
+endfunction
+
+function! sentencer#bind(...) abort
+  let [l:lnum, l:col] = a:0 == 2 ? [a:1, a:2] : ['.', col('.')]
+  let l:line = getline(l:lnum)
+  let l:col = match(l:line, '\s', l:col - 1)
+  if l:col == -1
+    return
+  endif
+
+  let l:pre = matchstr(l:line[:l:col], '\k\S*\ze\s*$')
+  let l:post = matchstr(l:line[l:col:], '^\s*\zs\S*\k')
+  let l:pat = printf('\V\<%s\zs\s\+\ze%s\>', l:pre, l:post)
+
+  let l:bound = get(b:, 'sentencer_bound', {})
+  if !has_key(l:bound, l:pat)
+    let l:bound[l:pat] = matchadd('Conceal', l:pat, 10, -1, {'conceal': '␣'})
+  else
+    call matchdelete(l:bound[l:pat])
+    unlet l:bound[l:pat]
+  endif
+  let b:sentencer_bound = l:bound
 endfunction
