@@ -1,6 +1,26 @@
 scriptencoding utf-8
 let s:t_float = type(0.1)
 
+if exists('*deletebufline')
+  function! s:deleteline(first, last) abort
+    call deletebufline('%', a:first, a:last)
+  endfunction
+else
+  function! s:deleteline(first, last) abort
+    execute printf('silent %d,%ddelete _', a:first, a:last)
+  endfunction
+endif
+
+if exists('*trim')
+  function! s:strip(txt) abort
+    return trim(a:txt)
+  endfunction
+else
+  function! s:strip(txt) abort
+    return substitute(a:txt, '\%(^\s\+\|\s\+$\)', '', 'g')
+  endfunction
+endif
+
 function! s:options() abort
   let l:o = {}
   let l:ignore = g:sentencer_ignore + get(b:, 'sentencer_ignore', [])
@@ -24,10 +44,6 @@ endfunction
 
 function! s:indent(txt, indent) abort
   return repeat(' ', a:indent) . a:txt
-endfunction
-
-function! s:strip(txt) abort
-  return substitute(a:txt, '\%(^\s\+\|\s\+$\)', '', 'g')
 endfunction
 
 function! s:paragraphs(lines) abort
@@ -113,7 +129,7 @@ function! sentencer#Format() abort
   endfor
 
   if l:orig != l:lines
-    execute printf('silent %d,%ddelete _', l:start, l:end)
+    call s:deleteline(l:start, l:end)
     if line('$') != 1
       call append(l:start - 1, l:lines)
     else
