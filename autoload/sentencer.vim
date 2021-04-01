@@ -12,11 +12,11 @@ else
 endif
 
 if exists('*trim')
-  function! s:strip(txt) abort
+  function! s:trim(txt) abort
     return trim(a:txt)
   endfunction
 else
-  function! s:strip(txt) abort
+  function! s:trim(txt) abort
     return substitute(a:txt, '\%(^\s\+\|\s\+$\)', '', 'g')
   endfunction
 endif
@@ -47,48 +47,52 @@ function! s:indent(txt, indent) abort
 endfunction
 
 function! s:paragraphs(lines) abort
-  let l:paras = [[]]
+  let l:paras = [[-1, []]]
   for l:line in a:lines
     if l:line =~# '^\s*$'
-      let l:paras = add(l:paras, [])
+      let l:paras = add(l:paras, [-1, []])
     else
-      let l:paras[-1] = add(l:paras[-1], l:line)
+      if l:paras[-1][0] == -1
+        let l:paras[-1][0] = match(l:line, '\S')
+      endif
+      let l:paras[-1][-1] = add(l:paras[-1][-1], l:line)
     endif
   endfor
   return l:paras
 endfunction
 
 function! s:join(lines) abort
-  return join(map(copy(a:lines), 's:strip(v:val)'), ' ')
+  return join(map(copy(a:lines), 's:trim(v:val)'), ' ')
 endfunction
 
-function! s:nextBreak(line, o) abort
+function! s:nextBreak(line, indent, o) abort
   let l:no_max = a:o.max_length < 0
+  let l:max_length = max([a:o.max_length - a:indent, 0])
   let l:line = a:line
   for l:pat in a:o.bound
     let l:line = substitute(l:line, l:pat, '~', 'g')
   endfor
 
   " The first punctuation before or at the maximum line length.
-  let l:maxline = l:no_max ? l:line : l:line[:a:o.max_length + a:o.overflow]
+  let l:maxline = l:no_max ? l:line : l:line[:l:max_length + a:o.overflow]
   let l:idx = match(l:maxline, a:o.punctuation)
   if l:idx != -1
     return l:idx
   endif
 
   " The line is not longer than the maximum line length.
-  if l:no_max || len(l:line) <= a:o.max_length + a:o.overflow
+  if l:no_max || len(l:line) <= l:max_length + a:o.overflow
     return -1
   endif
 
   " The last space before or at the maximum line length.
-  let l:idx = match(l:line[:a:o.max_length], '.*\zs' . a:o.space)
+  let l:idx = match(l:line[:l:max_length], '.*\zs' . a:o.space)
   if l:idx != -1
     return l:idx
   endif
 
   " The first space after the maximum line length.
-  let l:idx = match(l:line, ' ', a:o.max_length + 1)
+  let l:idx = match(l:line, ' ', l:max_length + 1)
   if l:idx != -1
     return l:idx
   endif
@@ -96,15 +100,15 @@ function! s:nextBreak(line, o) abort
   return -1
 endfunction
 
-function! s:split(line, o) abort
+function! s:split(line, indent, o) abort
   let l:lines = []
   let l:line = a:line
   let l:break = 0
 
   while l:break != -1 && l:line !=# ''
-    let l:break = s:nextBreak(l:line, a:o)
-    let l:lines = add(l:lines, s:strip(l:line[:l:break]))
-    let l:line = s:strip(l:line[l:break + 1:])
+    let l:break = s:nextBreak(l:line, a:indent, a:o)
+    let l:lines = add(l:lines, s:trim(l:line[:l:break]))
+    let l:line = s:trim(l:line[l:break + 1:])
   endwhile
 
   return l:lines
@@ -116,15 +120,16 @@ function! sentencer#Format() abort
   let l:start = v:lnum
   let l:end = l:start + v:count - 1
   let l:orig = getline(l:start, l:end)
-  let l:indent = indent(l:start)
 
   let l:first = 1
   let l:lines = []
-  for l:para in s:paragraphs(l:orig)
+  for [l:indent, l:para] in s:paragraphs(l:orig)
     if !l:first
       let l:lines += ['']
     endif
-    let l:lines += map(s:split(s:join(l:para), l:o), 's:indent(v:val, l:indent)')
+    let l:lines += map(
+      \ s:split(s:join(l:para), l:indent, l:o),
+      \ 's:indent(v:val, l:indent)')
     let l:first = 0
   endfor
 

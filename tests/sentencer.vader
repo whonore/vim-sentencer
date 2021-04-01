@@ -151,6 +151,32 @@ Expect markdown (two-paragraph-multi-blank):
   Nam eleifend mauris et lectus rhoncus, at feugiat
   sapien euismod.
 
+Given markdown (indent):
+   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+  Ut eleifend purus felis, vitae dictum purus porta sed.
+    Morbi nec luctus nisl, quis fringilla quam.
+   Aenean ultricies luctus sem sed commodo.
+
+Execute (indent):
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_max_length = 52
+  let g:sentencer_overflow = 5
+
+Do (indent):
+  gqG
+
+Expect markdown (indent):
+   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+   Nam eleifend mauris et lectus rhoncus, at feugiat
+   sapien euismod.
+
+  Ut eleifend purus felis, vitae dictum purus porta sed.
+  Morbi nec luctus nisl, quis fringilla quam.
+  Aenean ultricies luctus sem sed commodo.
+
 Given markdown (custom-punctuation):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
@@ -208,7 +234,7 @@ Given markdown (big):
   Suspendisse in fermentum lacus. Vivamus imperdiet mauris nec nisi ornare, sed fringilla risus dictum. Aenean semper lectus
   efficitur magna iaculis volutpat. Cras ullamcorper lacinia rhoncus. Ut sit amet imperdiet lectus.
 
-  Vivamus
+    Vivamus
   venenatis,
   tellus nec placerat mollis, risus turpis imperdiet ante, ut tincidunt sapien ex nec erat. Morbi
   velit turpis, efficitur ac risus
@@ -251,20 +277,20 @@ Expect markdown (big):
   Cras ullamcorper lacinia rhoncus.
   Ut sit amet imperdiet lectus.
 
-  Vivamus venenatis,
-  tellus nec placerat mollis,
-  risus turpis imperdiet ante,
-  ut tincidunt sapien ex nec erat.
-  Morbi velit turpis,
-  efficitur ac risus vel, ultrices feugiat tortor.
-  In hac habitasse platea dictumst.
-  Pellentesque mollis ex eros,
-  sed vulputate arcu pharetra ullamcorper.
-  Etiam nunc augue,
-  rhoncus consectetur eleifend eu,
-  cursus sit amet augue.
-  Sed sodales semper mauris sit amet finibus.
-  Maecenas pharetra finibus dui nec pharetra.
+    Vivamus venenatis,
+    tellus nec placerat mollis,
+    risus turpis imperdiet ante,
+    ut tincidunt sapien ex nec erat.
+    Morbi velit turpis,
+    efficitur ac risus vel, ultrices feugiat tortor.
+    In hac habitasse platea dictumst.
+    Pellentesque mollis ex eros,
+    sed vulputate arcu pharetra ullamcorper.
+    Etiam nunc augue,
+    rhoncus consectetur eleifend eu,
+    cursus sit amet augue.
+    Sed sodales semper mauris sit amet finibus.
+    Maecenas pharetra finibus dui nec pharetra.
 
 Given markdown (long-word):
   Loremipsum dolor
