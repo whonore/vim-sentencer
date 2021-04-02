@@ -53,10 +53,13 @@ function! s:indent(txt, indent) abort
 endfunction
 
 function! s:paragraphs(lines, o) abort
+  " indent-first, indent-rest, insert-blank?, lines
   let l:paras = [[-1, -1, 0, []]]
   for l:line in a:lines
+    " Blank line
     if l:line =~# '^\s*$'
       let l:paras = add(l:paras, [-1, -1, 1, []])
+    " List
     elseif a:o.list !=# '' && l:line =~# a:o.list
       let l:paras = add(l:paras, [
         \ match(l:line, '\S'),
@@ -64,15 +67,14 @@ function! s:paragraphs(lines, o) abort
         \ 0,
         \ [l:line]
       \])
+    " Continue paragraph
     else
+      " First line
       if l:paras[-1][0] == -1
         let l:paras[-1][0] = match(l:line, '\S')
+      " Second line
       elseif l:paras[-1][1] == -1
-        if a:o.indent2
-          let l:paras[-1][1] = match(l:line, '\S')
-        else
-          let l:paras[-1][1] = l:paras[-1][0]
-        endif
+        let l:paras[-1][1] = a:o.indent2 ? match(l:line, '\S') : l:paras[-1][0]
       endif
       let l:paras[-1][3] = add(l:paras[-1][3], l:line)
     endif
