@@ -2,7 +2,7 @@ Given markdown (one-sentence-short):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Execute (one-sentence-short):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 80
@@ -18,7 +18,7 @@ Given markdown (one-sentence-long):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Execute (one-sentence-long):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 50
@@ -35,7 +35,7 @@ Given markdown (one-sentence-overflow-int):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Execute (one-sentence-overflow-int):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 52
@@ -51,7 +51,7 @@ Given markdown (one-sentence-overflow-float):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Execute (one-sentence-overflow-float):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 52
@@ -67,7 +67,7 @@ Given markdown (two-sentence-short):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (two-sentence-short):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 200
@@ -84,7 +84,7 @@ Given markdown (two-sentence-long):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (two-sentence-long):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 50
@@ -103,7 +103,7 @@ Given markdown (two-sentence-no-space):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (two-sentence-no-space):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 200
@@ -121,7 +121,7 @@ Given markdown (two-paragraph):
   Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (two-paragraph):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 52
@@ -143,7 +143,7 @@ Given markdown (two-paragraph-multi-blank):
   Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (two-paragraph-multi-blank):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 50
@@ -169,7 +169,7 @@ Given markdown (indent):
    Aenean ultricies luctus sem sed commodo.
 
 Execute (indent):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 52
@@ -187,11 +187,39 @@ Expect markdown (indent):
   Morbi nec luctus nisl, quis fringilla quam.
   Aenean ultricies luctus sem sed commodo.
 
+Given markdown (indent2):
+   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
+
+  Ut eleifend purus felis, vitae dictum purus porta sed.
+    Morbi nec luctus nisl, quis fringilla quam.
+   Aenean ultricies luctus sem sed commodo.
+
+Execute (indent2):
+  set tw& fo&
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_max_length = 52
+  let g:sentencer_overflow = 5
+  set formatoptions+=2
+
+Do (indent2):
+  gqG
+
+Expect markdown (indent2):
+   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  Nam eleifend mauris et lectus rhoncus, at feugiat
+  sapien euismod.
+
+  Ut eleifend purus felis, vitae dictum purus porta sed.
+    Morbi nec luctus nisl, quis fringilla quam.
+    Aenean ultricies luctus sem sed commodo.
+
 Given markdown (custom-punctuation):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 Execute (custom-punctuation):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 80
@@ -208,7 +236,7 @@ Given markdown (ignore):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (ignore):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = ['amet']
   let g:sentencer_max_length = 80
@@ -226,7 +254,7 @@ Given markdown (no-max-len):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (no-max-len):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = -1
@@ -243,7 +271,7 @@ Given markdown (default-max-len):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (default-max-len):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 0
@@ -276,7 +304,7 @@ Given markdown (big):
   finibus dui nec pharetra.
 
 Execute (big):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = ['amet', 'vel']
   let g:sentencer_max_length = 50
@@ -334,7 +362,7 @@ Given markdown (long-word):
   Lorem ipsumdolor sitamet
 
 Execute (long-word):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 5
@@ -372,7 +400,7 @@ Given markdown (max-len-inclusive):
   1234567 8
 
 Execute (max-len-inclusive):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 6
@@ -408,7 +436,7 @@ Given markdown (bound):
   Lorem ipsum dolor sit  amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (bound):
-  set tw&
+  set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
   let g:sentencer_max_length = 25
@@ -434,7 +462,7 @@ Given markdown (bind):
   Lorem ipsum dolor sit  amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
 Execute (bind):
-  set tw&
+  set tw& fo&
   let b:sentencer_bound = {}
 
   call sentencer#bind(1, 22)

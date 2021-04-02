@@ -43,6 +43,7 @@ function! s:options() abort
   let l:o.overflow = type(g:sentencer_overflow) == s:t_float
     \ ? float2nr(round(g:sentencer_overflow * g:sentencer_max_length))
     \ : g:sentencer_overflow
+  let l:o.indent2 = stridx(&formatoptions, '2') != -1
   return l:o
 endfunction
 
@@ -50,16 +51,22 @@ function! s:indent(txt, indent) abort
   return repeat(' ', a:indent) . a:txt
 endfunction
 
-function! s:paragraphs(lines) abort
-  let l:paras = [[-1, []]]
+function! s:paragraphs(lines, o) abort
+  let l:paras = [[-1, -1, []]]
   for l:line in a:lines
     if l:line =~# '^\s*$'
-      let l:paras = add(l:paras, [-1, []])
+      let l:paras = add(l:paras, [-1, -1, []])
     else
       if l:paras[-1][0] == -1
         let l:paras[-1][0] = match(l:line, '\S')
+      elseif l:paras[-1][1] == -1
+        if a:o.indent2
+          let l:paras[-1][1] = match(l:line, '\S')
+        else
+          let l:paras[-1][1] = l:paras[-1][0]
+        endif
       endif
-      let l:paras[-1][-1] = add(l:paras[-1][-1], l:line)
+      let l:paras[-1][2] = add(l:paras[-1][2], l:line)
     endif
   endfor
   return l:paras
@@ -104,13 +111,16 @@ function! s:nextBreak(line, indent, o) abort
   return -1
 endfunction
 
-function! s:split(line, indent, o) abort
+function! s:split(line, indent1, indent, o) abort
   let l:lines = []
   let l:line = a:line
   let l:break = 0
 
   while l:break != -1 && l:line !=# ''
-    let l:break = s:nextBreak(l:line, a:indent, a:o)
+    let l:break = s:nextBreak(
+      \ l:line,
+      \ l:break == 0 || a:indent < 0 ? a:indent1 : a:indent,
+      \ a:o)
     let l:lines = add(l:lines, s:trim(l:line[:l:break]))
     let l:line = s:trim(l:line[l:break + 1:])
   endwhile
@@ -127,13 +137,14 @@ function! sentencer#Format() abort
 
   let l:first = 1
   let l:lines = []
-  for [l:indent, l:para] in s:paragraphs(l:orig)
+  for [l:indent1, l:indent, l:para] in s:paragraphs(l:orig, l:o)
     if !l:first
       let l:lines += ['']
     endif
-    let l:lines += map(
-      \ s:split(s:join(l:para), l:indent, l:o),
-      \ 's:indent(v:val, l:indent)')
+    let l:para = s:split(s:join(l:para), l:indent1, l:indent, l:o)
+    let l:lines +=
+      \ [s:indent(l:para[0], l:indent1)]
+      \ + map(l:para[1:], 's:indent(v:val, l:indent)')
     let l:first = 0
   endfor
 
