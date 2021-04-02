@@ -44,6 +44,7 @@ function! s:options() abort
     \ ? float2nr(round(g:sentencer_overflow * g:sentencer_max_length))
     \ : g:sentencer_overflow
   let l:o.indent2 = stridx(&formatoptions, '2') != -1
+  let l:o.list = stridx(&formatoptions, 'n') != -1 ? &formatlistpat : ''
   return l:o
 endfunction
 
@@ -52,10 +53,17 @@ function! s:indent(txt, indent) abort
 endfunction
 
 function! s:paragraphs(lines, o) abort
-  let l:paras = [[-1, -1, []]]
+  let l:paras = [[-1, -1, 0, []]]
   for l:line in a:lines
     if l:line =~# '^\s*$'
-      let l:paras = add(l:paras, [-1, -1, []])
+      let l:paras = add(l:paras, [-1, -1, 1, []])
+    elseif a:o.list !=# '' && l:line =~# a:o.list
+      let l:paras = add(l:paras, [
+        \ match(l:line, '\S'),
+        \ matchend(l:line, a:o.list),
+        \ 0,
+        \ [l:line]
+      \])
     else
       if l:paras[-1][0] == -1
         let l:paras[-1][0] = match(l:line, '\S')
@@ -66,7 +74,7 @@ function! s:paragraphs(lines, o) abort
           let l:paras[-1][1] = l:paras[-1][0]
         endif
       endif
-      let l:paras[-1][2] = add(l:paras[-1][2], l:line)
+      let l:paras[-1][3] = add(l:paras[-1][3], l:line)
     endif
   endfor
   return l:paras
@@ -135,17 +143,15 @@ function! sentencer#Format() abort
   let l:end = l:start + v:count - 1
   let l:orig = getline(l:start, l:end)
 
-  let l:first = 1
   let l:lines = []
-  for [l:indent1, l:indent, l:para] in s:paragraphs(l:orig, l:o)
-    if !l:first
+  for [l:indent1, l:indent, l:blank, l:para] in s:paragraphs(l:orig, l:o)
+    if l:blank
       let l:lines += ['']
     endif
     let l:para = s:split(s:join(l:para), l:indent1, l:indent, l:o)
     let l:lines +=
       \ [s:indent(l:para[0], l:indent1)]
       \ + map(l:para[1:], 's:indent(v:val, l:indent)')
-    let l:first = 0
   endfor
 
   if l:orig != l:lines
