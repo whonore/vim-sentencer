@@ -10,7 +10,7 @@ endfunction
 call s:setopt('sentencer_punctuation', '.!?')
 call s:setopt('sentencer_ignore',
   \ ['\<i.e', '\<e.g', '\<vs', '\<Dr', '\<Mr', '\<Mrs', '\<Ms'])
-call s:setopt('sentencer_max_length', 0 < &textwidth ? &textwidth : 80)
+call s:setopt('sentencer_max_length', 0)
 call s:setopt('sentencer_overflow', 0.1)
 call s:setopt('sentencer_filetypes', ['markdown', 'tex', 'text'])
 

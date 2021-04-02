@@ -35,7 +35,11 @@ function! s:options() abort
       \ g:sentencer_punctuation,
       \ l:o.space
     \)
-  let l:o.max_length = g:sentencer_max_length
+  let l:o.max_length = g:sentencer_max_length > 0
+    \ ? g:sentencer_max_length
+    \ : g:sentencer_max_length == 0 && &textwidth > 0
+    \ ? &textwidth
+    \ : -1
   let l:o.overflow = type(g:sentencer_overflow) == s:t_float
     \ ? float2nr(round(g:sentencer_overflow * g:sentencer_max_length))
     \ : g:sentencer_overflow
