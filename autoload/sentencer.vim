@@ -73,12 +73,20 @@ function! s:paragraphs(lines, o) abort
       if l:paras[-1][0] == -1
         let l:paras[-1][0] = match(l:line, '\S')
       " Second line
-      elseif l:paras[-1][1] == -1
-        let l:paras[-1][1] = a:o.indent2 ? match(l:line, '\S') : l:paras[-1][0]
+      elseif l:paras[-1][1] == -1 && a:o.indent2
+        let l:paras[-1][1] = match(l:line, '\S')
       endif
       let l:paras[-1][3] = add(l:paras[-1][3], l:line)
     endif
   endfor
+
+  " indent-rest defaults to indent-first
+  for l:para in l:paras
+    if l:para[1] == -1
+      let l:para[1] = l:para[0]
+    endif
+  endfor
+
   return l:paras
 endfunction
 

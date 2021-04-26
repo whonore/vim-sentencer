@@ -168,6 +168,8 @@ Given markdown (indent):
     Morbi nec luctus nisl, quis fringilla quam.
    Aenean ultricies luctus sem sed commodo.
 
+    Donec volutpat metus libero, a sollicitudin felis sollicitudin et. Etiam vehicula velit sed placerat faucibus.
+
 Execute (indent):
   set tw& fo&
   let g:sentencer_punctuation = '.'
@@ -187,6 +189,10 @@ Expect markdown (indent):
   Morbi nec luctus nisl, quis fringilla quam.
   Aenean ultricies luctus sem sed commodo.
 
+    Donec volutpat metus libero, a sollicitudin felis
+    sollicitudin et.
+    Etiam vehicula velit sed placerat faucibus.
+
 Given markdown (indent2):
    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
   Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
@@ -194,6 +200,8 @@ Given markdown (indent2):
   Ut eleifend purus felis, vitae dictum purus porta sed.
     Morbi nec luctus nisl, quis fringilla quam.
    Aenean ultricies luctus sem sed commodo.
+
+    Donec volutpat metus libero, a sollicitudin felis sollicitudin et. Etiam vehicula velit sed placerat faucibus.
 
 Execute (indent2):
   set tw& fo&
@@ -214,6 +222,10 @@ Expect markdown (indent2):
   Ut eleifend purus felis, vitae dictum purus porta sed.
     Morbi nec luctus nisl, quis fringilla quam.
     Aenean ultricies luctus sem sed commodo.
+
+    Donec volutpat metus libero, a sollicitudin felis
+    sollicitudin et.
+    Etiam vehicula velit sed placerat faucibus.
 
 Given markdown (list):
   1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
