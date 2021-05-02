@@ -21,11 +21,11 @@ else
   endfunction
 endif
 
-function s:bufempty() abort
+function! s:bufempty() abort
   return line('$') == 1 && empty(getline(1))
 endfunction
 
-function s:insertline(start, text) abort
+function! s:insertline(start, text) abort
   if s:bufempty()
     " append adds an extra newline if the file is empty
     call setline(a:start, a:text)
