@@ -160,6 +160,32 @@ Expect markdown (two-paragraph-multi-blank):
   Nam eleifend mauris et lectus rhoncus, at feugiat
   sapien euismod.
 
+Given markdown (leading-trailing-blank):
+
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+  <EOF>
+
+Execute (leading-trailing-blank):
+  set tw& fo&
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_max_length = 50
+  let g:sentencer_overflow = 0
+
+Do (leading-trailing-blank):
+  :$s/<EOF>//\<Enter>
+  gg
+  gqG
+  :$s/^$/<EOF>/\<Enter>
+
+Expect markdown (leading-trailing-blank):
+
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
+
+  <EOF>
+
 Given markdown (indent):
    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
   Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
