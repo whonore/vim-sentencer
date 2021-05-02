@@ -475,6 +475,25 @@ Expect markdown (max-len-inclusive):
   1234567
   8
 
+Given markdown (only-first-line):
+  A. B.
+  C. D.
+
+Execute (only-first-line):
+  set tw& fo&
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_max_length = 80
+  let g:sentencer_overflow = 0
+
+Do (only-first-line):
+  gqq
+
+Expect markdown (only-first-line):
+  A.
+  B.
+  C. D.
+
 Given markdown (bound):
   Lorem ipsum dolor sit  amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 

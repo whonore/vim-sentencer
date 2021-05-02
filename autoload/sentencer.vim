@@ -21,6 +21,19 @@ else
   endfunction
 endif
 
+function s:bufempty() abort
+  return line('$') == 1 && empty(getline(1))
+endfunction
+
+function s:insertline(start, text) abort
+  if s:bufempty()
+    " append adds an extra newline if the file is empty
+    call setline(a:start, a:text)
+  else
+    call append(a:start - 1, a:text)
+  endif
+endfunction
+
 function! s:options() abort
   let l:o = {}
   let l:ignore = g:sentencer_ignore + get(b:, 'sentencer_ignore', [])
@@ -166,12 +179,7 @@ function! sentencer#Format() abort
 
   if l:orig != l:lines
     call s:deleteline(l:start, l:end)
-    if line('$') != 1
-      call append(l:start - 1, l:lines)
-    else
-      " append adds an extra newline if the file is empty
-      call setline(l:start, l:lines)
-    endif
+    call s:insertline(l:start, l:lines)
   endif
 
   call setpos('.', l:pos)
