@@ -48,13 +48,13 @@ function! s:options() abort
       \ g:sentencer_punctuation,
       \ l:o.space
     \)
-  let l:o.max_length = g:sentencer_max_length > 0
-    \ ? g:sentencer_max_length
-    \ : g:sentencer_max_length == 0 && &textwidth > 0
+  let l:o.textwidth = g:sentencer_textwidth > 0
+    \ ? g:sentencer_textwidth
+    \ : g:sentencer_textwidth == 0 && &textwidth > 0
     \ ? &textwidth
     \ : -1
   let l:o.overflow = type(g:sentencer_overflow) == s:t_float
-    \ ? float2nr(round(g:sentencer_overflow * g:sentencer_max_length))
+    \ ? float2nr(round(g:sentencer_overflow * g:sentencer_textwidth))
     \ : g:sentencer_overflow
   let l:o.indent2 = stridx(&formatoptions, '2') != -1
   let l:o.list = stridx(&formatoptions, 'n') != -1 ? &formatlistpat : ''
@@ -108,33 +108,33 @@ function! s:join(lines) abort
 endfunction
 
 function! s:nextBreak(line, indent, o) abort
-  let l:no_max = a:o.max_length < 0
-  let l:max_length = max([a:o.max_length - a:indent, 0])
+  let l:no_max = a:o.textwidth < 0
+  let l:textwidth = max([a:o.textwidth - a:indent, 0])
   let l:line = a:line
   for l:pat in a:o.bound
     let l:line = substitute(l:line, l:pat, '~', 'g')
   endfor
 
   " The first punctuation before or at the maximum line length.
-  let l:maxline = l:no_max ? l:line : l:line[:l:max_length + a:o.overflow]
+  let l:maxline = l:no_max ? l:line : l:line[:l:textwidth + a:o.overflow]
   let l:idx = match(l:maxline, a:o.punctuation)
   if l:idx != -1
     return l:idx
   endif
 
   " The line is not longer than the maximum line length.
-  if l:no_max || len(l:line) <= l:max_length + a:o.overflow
+  if l:no_max || len(l:line) <= l:textwidth + a:o.overflow
     return -1
   endif
 
   " The last space before or at the maximum line length.
-  let l:idx = match(l:line[:l:max_length], '.*\zs' . a:o.space)
+  let l:idx = match(l:line[:l:textwidth], '.*\zs' . a:o.space)
   if l:idx != -1
     return l:idx
   endif
 
   " The first space after the maximum line length.
-  let l:idx = match(l:line, ' ', l:max_length + 1)
+  let l:idx = match(l:line, ' ', l:textwidth + 1)
   if l:idx != -1
     return l:idx
   endif

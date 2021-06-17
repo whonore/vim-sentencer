@@ -5,7 +5,7 @@ Execute (one-sentence-short):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 80
+  let g:sentencer_textwidth = 80
   let g:sentencer_overflow = 0
 
 Do (one-sentence-short):
@@ -21,7 +21,7 @@ Execute (one-sentence-long):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 50
+  let g:sentencer_textwidth = 50
   let g:sentencer_overflow = 0
 
 Do (one-sentence-long):
@@ -38,7 +38,7 @@ Execute (one-sentence-overflow-int):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 52
+  let g:sentencer_textwidth = 52
   let g:sentencer_overflow = 5
 
 Do (one-sentence-overflow-int):
@@ -54,7 +54,7 @@ Execute (one-sentence-overflow-float):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 52
+  let g:sentencer_textwidth = 52
   let g:sentencer_overflow = 0.1
 
 Do (one-sentence-overflow-float):
@@ -70,7 +70,7 @@ Execute (two-sentence-short):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 200
+  let g:sentencer_textwidth = 200
   let g:sentencer_overflow = 0
 
 Do (two-sentence-short):
@@ -87,7 +87,7 @@ Execute (two-sentence-long):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 50
+  let g:sentencer_textwidth = 50
   let g:sentencer_overflow = 0
 
 Do (two-sentence-long):
@@ -106,7 +106,7 @@ Execute (two-sentence-no-space):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 200
+  let g:sentencer_textwidth = 200
   let g:sentencer_overflow = 0
 
 Do (two-sentence-no-space):
@@ -124,7 +124,7 @@ Execute (two-paragraph):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 52
+  let g:sentencer_textwidth = 52
   let g:sentencer_overflow = 5
 
 Do (two-paragraph):
@@ -146,7 +146,7 @@ Execute (two-paragraph-multi-blank):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 50
+  let g:sentencer_textwidth = 50
   let g:sentencer_overflow = 0
 
 Do (two-paragraph-multi-blank):
@@ -170,7 +170,7 @@ Execute (leading-trailing-blank):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 50
+  let g:sentencer_textwidth = 50
   let g:sentencer_overflow = 0
 
 Do (leading-trailing-blank):
@@ -200,7 +200,7 @@ Execute (indent):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 52
+  let g:sentencer_textwidth = 52
   let g:sentencer_overflow = 5
 
 Do (indent):
@@ -233,7 +233,7 @@ Execute (indent2):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 52
+  let g:sentencer_textwidth = 52
   let g:sentencer_overflow = 5
   set formatoptions+=2
 
@@ -267,7 +267,7 @@ Execute (list):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = ['1', '22', '3']
-  let g:sentencer_max_length = 52
+  let g:sentencer_textwidth = 52
   let g:sentencer_overflow = 5
   set formatoptions+=n
 
@@ -291,7 +291,7 @@ Execute (custom-punctuation):
   set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 80
+  let g:sentencer_textwidth = 80
   let g:sentencer_overflow = 0
 
 Do (custom-punctuation):
@@ -308,7 +308,7 @@ Execute (ignore):
   set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = ['amet']
-  let g:sentencer_max_length = 80
+  let g:sentencer_textwidth = 80
   let g:sentencer_overflow = 0
 
 Do (ignore):
@@ -326,7 +326,7 @@ Execute (no-max-len):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = -1
+  let g:sentencer_textwidth = -1
   let g:sentencer_overflow = 0
 
 Do (no-max-len):
@@ -343,7 +343,7 @@ Execute (default-max-len):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 0
+  let g:sentencer_textwidth = 0
   let g:sentencer_overflow = 0
   set textwidth=50
 
@@ -376,7 +376,7 @@ Execute (big):
   set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = ['amet', 'vel']
-  let g:sentencer_max_length = 50
+  let g:sentencer_textwidth = 50
   let g:sentencer_overflow = 4
 
 Do (big):
@@ -434,7 +434,7 @@ Execute (long-word):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 5
+  let g:sentencer_textwidth = 5
   let g:sentencer_overflow = 0
 
 Do (long-word):
@@ -472,7 +472,7 @@ Execute (max-len-inclusive):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 6
+  let g:sentencer_textwidth = 6
   let g:sentencer_overflow = 0
 
 Do (max-len-inclusive):
@@ -509,7 +509,7 @@ Execute (only-first-line):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 80
+  let g:sentencer_textwidth = 80
   let g:sentencer_overflow = 0
 
 Do (only-first-line):
@@ -527,7 +527,7 @@ Execute (bound):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
-  let g:sentencer_max_length = 25
+  let g:sentencer_textwidth = 25
   let g:sentencer_overflow = 0
   let b:sentencer_bound = {
     \ '\V\<sit\zs\s\+\zeamet\>': 1,
