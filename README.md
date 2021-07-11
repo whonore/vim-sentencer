@@ -3,7 +3,8 @@
 [![Build Status](https://github.com/whonore/vim-sentencer/workflows/Tests/badge.svg?branch=master)](https://github.com/whonore/vim-sentencer/actions?query=workflow%3ATests)
 
 One sentence per line and wrap long lines.
-Force words to appear on the same line by "binding" them with `:SentencerBind`.
+* Format text using `gq` with `set formatexpr=sentencer#Format()` or `:[range]Sentencer`.
+* Force words to appear on the same line by "binding" them with `:SentencerBind`.
 
 Configuration:
 | Variable | Description | Default |
