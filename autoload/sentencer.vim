@@ -176,7 +176,7 @@ function! sentencer#Format(...) abort
     if l:blank
       let l:lines += ['']
     endif
-    if len(l:para) == 0
+    if empty(l:para)
         continue
     endif
     let l:para = s:split(s:join(l:para), l:indent1, l:indent, l:o)
