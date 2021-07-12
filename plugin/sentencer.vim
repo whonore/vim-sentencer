@@ -21,4 +21,5 @@ augroup sentencer
   endfor
 augroup END
 
+command! -range Sentencer call sentencer#Format(<line1>, <line2>)
 command! -nargs=* SentencerBind call sentencer#bind(<f-args>)

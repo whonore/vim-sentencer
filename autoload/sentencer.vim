@@ -159,17 +159,25 @@ function! s:split(line, indent1, indent, o) abort
   return l:lines
 endfunction
 
-function! sentencer#Format() abort
+function! sentencer#Format(...) abort
   let l:o = s:options()
   let l:pos = getcurpos()
-  let l:start = v:lnum
-  let l:end = l:start + v:count - 1
+  if a:0 " from :Sentencer command
+      let l:start = a:1
+      let l:end = a:2
+  else " from formatexpr
+      let l:start = v:lnum
+      let l:end = l:start + v:count - 1
+  endif
   let l:orig = getline(l:start, l:end)
 
   let l:lines = []
   for [l:indent1, l:indent, l:blank, l:para] in s:paragraphs(l:orig, l:o)
     if l:blank
       let l:lines += ['']
+    endif
+    if empty(l:para)
+        continue
     endif
     let l:para = s:split(s:join(l:para), l:indent1, l:indent, l:o)
     let l:lines +=
