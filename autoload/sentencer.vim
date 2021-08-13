@@ -134,7 +134,7 @@ function! s:nextBreak(line, indent, o) abort
   endif
 
   " The first space after the maximum line length.
-  let l:idx = match(l:line, ' ', l:textwidth + 1)
+  let l:idx = match(l:line, a:o.space, l:textwidth + 1)
   if l:idx != -1
     return l:idx
   endif
