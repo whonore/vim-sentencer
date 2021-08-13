@@ -466,7 +466,7 @@ Given markdown (max-len-inclusive):
 
   123456 8
 
-  1234567 8
+  1234567 9
 
 Execute (max-len-inclusive):
   set tw& fo&
@@ -499,7 +499,7 @@ Expect markdown (max-len-inclusive):
   8
 
   1234567
-  8
+  9
 
 Given markdown (only-first-line):
   A. B.
