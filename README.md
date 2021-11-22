@@ -1,6 +1,6 @@
 # vim-sentencer
 
-[![Build Status](https://github.com/whonore/vim-sentencer/workflows/Tests/badge.svg?branch=master)](https://github.com/whonore/vim-sentencer/actions?query=workflow%3ATests)
+[![Build Status](https://github.com/whonore/vim-sentencer/workflows/Tests/badge.svg?branch=main)](https://github.com/whonore/vim-sentencer/actions?query=workflow%3ATests)
 
 One sentence per line and wrap long lines.
 * Format text using `gq` with `set formatexpr=sentencer#Format()` or `:[range]Sentencer`.
