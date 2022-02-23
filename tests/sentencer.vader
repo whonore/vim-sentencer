@@ -266,7 +266,7 @@ Given markdown (list):
 Execute (list):
   set tw& fo&
   let g:sentencer_punctuation = '.'
-  let g:sentencer_ignore = ['1', '22', '3']
+  let g:sentencer_ignore = []
   let g:sentencer_textwidth = 52
   let g:sentencer_overflow = 5
   set formatoptions+=n
@@ -277,8 +277,8 @@ Do (list):
 Expect markdown (list):
   1. Lorem ipsum dolor sit amet, consectetur
      adipiscing elit.
-  22. Nam eleifend mauris et lectus rhoncus, 3. at
-      feugiat sapien euismod.
+  22. Nam eleifend mauris et lectus rhoncus, 3.
+      at feugiat sapien euismod.
 
   - Ut eleifend purus felis, vitae dictum purus porta sed.
     Morbi nec luctus nisl, quis fringilla quam.

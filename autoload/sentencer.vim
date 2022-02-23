@@ -66,18 +66,19 @@ function! s:indent(txt, indent) abort
 endfunction
 
 function! s:paragraphs(lines, o) abort
-  " indent-first, indent-rest, insert-blank?, lines
-  let l:paras = [[-1, -1, 0, []]]
+  " indent-first, indent-rest, insert-blank?, list?, lines
+  let l:paras = [[-1, -1, 0, 0, []]]
   for l:line in a:lines
     " Blank line
     if l:line =~# '^\s*$'
-      let l:paras = add(l:paras, [-1, -1, 1, []])
+      let l:paras = add(l:paras, [-1, -1, 1, 0, []])
     " List
     elseif a:o.list !=# '' && l:line =~# a:o.list
       let l:paras = add(l:paras, [
         \ match(l:line, '\S'),
         \ matchend(l:line, a:o.list),
         \ 0,
+        \ 1,
         \ [l:line]
       \])
     " Continue paragraph
@@ -89,7 +90,7 @@ function! s:paragraphs(lines, o) abort
       elseif l:paras[-1][1] == -1 && a:o.indent2
         let l:paras[-1][1] = match(l:line, '\S')
       endif
-      let l:paras[-1][3] = add(l:paras[-1][3], l:line)
+      let l:paras[-1][4] = add(l:paras[-1][4], l:line)
     endif
   endfor
 
@@ -107,7 +108,7 @@ function! s:join(lines) abort
   return join(map(copy(a:lines), 's:trim(v:val)'), ' ')
 endfunction
 
-function! s:nextBreak(line, indent, o) abort
+function! s:nextBreak(line, indent, skip, o) abort
   let l:no_max = a:o.textwidth < 0
   let l:textwidth = max([a:o.textwidth - a:indent, 0])
   let l:line = a:line
@@ -115,9 +116,10 @@ function! s:nextBreak(line, indent, o) abort
     let l:line = substitute(l:line, l:pat, '~', 'g')
   endfor
 
-  " The first punctuation before or at the maximum line length.
+  " The first punctuation before or at the maximum line length. Ignore
+  " punctuation that begins a list (e.g., 1.).
   let l:maxline = l:no_max ? l:line : l:line[:l:textwidth + a:o.overflow]
-  let l:idx = match(l:maxline, a:o.punctuation)
+  let l:idx = match(l:maxline, a:o.punctuation, a:skip)
   if l:idx != -1
     return l:idx
   endif
@@ -142,15 +144,18 @@ function! s:nextBreak(line, indent, o) abort
   return -1
 endfunction
 
-function! s:split(line, indent1, indent, o) abort
+function! s:split(line, indent1, indent, list, o) abort
   let l:lines = []
   let l:line = a:line
   let l:break = 0
 
   while l:break != -1 && l:line !=# ''
+    let l:first = l:break == 0
+    let l:skiplist = a:list && l:first
     let l:break = s:nextBreak(
       \ l:line,
-      \ l:break == 0 || a:indent < 0 ? a:indent1 : a:indent,
+      \ l:first ? a:indent1 : a:indent,
+      \ l:skiplist ? a:indent : 0,
       \ a:o)
     let l:lines = add(l:lines, s:trim(l:line[:l:break]))
     let l:line = s:trim(l:line[l:break + 1:])
@@ -163,23 +168,23 @@ function! sentencer#Format(...) abort
   let l:o = s:options()
   let l:pos = getcurpos()
   if a:0 " from :Sentencer command
-      let l:start = a:1
-      let l:end = a:2
+    let l:start = a:1
+    let l:end = a:2
   else " from formatexpr
-      let l:start = v:lnum
-      let l:end = l:start + v:count - 1
+    let l:start = v:lnum
+    let l:end = l:start + v:count - 1
   endif
   let l:orig = getline(l:start, l:end)
 
   let l:lines = []
-  for [l:indent1, l:indent, l:blank, l:para] in s:paragraphs(l:orig, l:o)
+  for [l:indent1, l:indent, l:blank, l:list, l:para] in s:paragraphs(l:orig, l:o)
     if l:blank
       let l:lines += ['']
     endif
     if empty(l:para)
-        continue
+      continue
     endif
-    let l:para = s:split(s:join(l:para), l:indent1, l:indent, l:o)
+    let l:para = s:split(s:join(l:para), l:indent1, l:indent, l:list, l:o)
     let l:lines +=
       \ [s:indent(l:para[0], l:indent1)]
       \ + map(l:para[1:], 's:indent(v:val, l:indent)')
