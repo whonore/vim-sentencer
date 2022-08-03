@@ -6,7 +6,8 @@ One sentence per line and wrap long lines.
 * Format text using `gq` with `set formatexpr=sentencer#Format()` or `:[range]Sentencer`.
 * Force words to appear on the same line by "binding" them with `:SentencerBind`.
 
-Configuration:
+## Configuration
+
 | Variable | Description | Default |
 |---|---|---|
 | `g:sentencer_punctuation` | The characters to recognize as sentence ending punctuation. | `'.!?'` |
@@ -14,3 +15,13 @@ Configuration:
 | `g:sentencer_textwidth` |  The maximum line length before wrapping. Set to `0` to use `&textwidth` and `-1` to disable. | `0` |
 | `g:sentencer_overflow` | The number of allowed characters over the max length before wrapping. Or, as a float, the percent of the max length to allow before wrapping. | `0.1` |
 | `g:sentencer_filetypes` | The filetypes to automatically set `formatexpr`. Use `['*']` to enable for all filetypes. | `['markdown', 'tex', 'text']` |
+
+### Lists
+
+Line-wrapping lists is supported if the `n` flag is set in `'formatoptions'`.
+Lists are recognized using the `'formatlistpat'` option.
+For example, the following options recognize Markdown lists.
+```vim
+set formatoptions+=n
+let &formatlistpat='^\s*\d\+\.\s\+\|^\s*[-*+]\s\+\|^\[^\ze[^\]]\+\]:'
+```
