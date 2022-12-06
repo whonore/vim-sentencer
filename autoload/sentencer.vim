@@ -34,6 +34,104 @@ function! s:insertline(start, text) abort
   endif
 endfunction
 
+function! s:nearestnonws(line, cidx) abort
+  " Find the nearest non-whitespace character to `cidx`, preferring later
+  " matches.
+  let l:cidx = match(a:line, '\S', a:cidx)
+  if l:cidx == -1
+    let l:cidx = match(a:line[:a:cidx], '.*\S')
+  endif
+  " If there are no non-whitespace characters, treat it as a blank line.
+  return l:cidx != -1 ? [a:line[l:cidx], l:cidx - a:cidx] : ['', -a:cidx]
+endfunction
+
+function! s:matchidx(lines, lidx, cidx, chr) abort
+  " Count the number of matches of the character at `(lidx, cidx)` in `lines`
+  " up to and including `(lidx, cidx)`.
+  let l:pat = !empty(a:chr) ? '\V' . a:chr : '^\s*$'
+  let l:idx = 0
+  for l:lidx in range(a:lidx + 1)
+    let l:line = a:lines[l:lidx]
+    let l:cnt = 1
+    while 1
+      let l:cidx = match(l:line, l:pat, 0, l:cnt)
+      if l:cidx == -1
+        break
+      endif
+      let l:cnt += 1
+      let l:idx += 1
+      if [l:lidx, l:cidx] == [a:lidx, a:cidx]
+        return l:idx
+      endif
+    endwhile
+  endfor
+  throw printf('Failed to find character (%s)', a:chr)
+endfunction
+
+function! s:findidx(lines, idx, chr) abort
+  " Find the `idx`-th match of `chr` in `lines.`
+  let l:pat = !empty(a:chr) ? '\V' . a:chr : '^$'
+  let l:idx = 0
+  for l:lidx in range(len(a:lines))
+    let l:line = a:lines[l:lidx]
+    let l:cnt = 1
+    while 1
+      let l:cidx = match(l:line, l:pat, 0, l:cnt)
+      if l:cidx == -1
+        break
+      endif
+      let l:cnt += 1
+      let l:idx += 1
+      if l:idx == a:idx
+        return [l:lidx, l:cidx]
+      endif
+    endwhile
+  endfor
+  throw printf('Failed to find character (%s)', a:chr)
+endfunction
+
+function! s:trackcursor(lines, start, end) abort
+  let [l:lnum, l:cnum] = getcurpos()[1:2]
+  let l:type = l:lnum < a:start ? 'before' : a:end < l:lnum ? 'after' : 'inside'
+  let l:curinfo = {
+    \ 'type': l:type,
+    \ 'cpos': [l:lnum, l:cnum],
+    \ 'start': a:start,
+    \ 'nlines': a:end - a:start + 1
+  \}
+
+  if l:type ==# 'inside'
+    " Remember the index of the character under the cursor (how many of the
+    " same character appear before it) in order to restore the position after
+    " formatting. This is much easier than trying to map the original position
+    " to the new position after formatting.
+    let l:lidx = l:lnum - a:start
+    let l:cidx = l:cnum - 1
+    let [l:curchr, l:coff] = s:nearestnonws(a:lines[l:lidx], l:cidx)
+    let l:curinfo['curchr'] = l:curchr
+    let l:curinfo['curidx'] = s:matchidx(a:lines, l:lidx, l:cidx + l:coff, l:curchr)
+    let l:curinfo['curoff'] = l:coff
+  endif
+
+  return l:curinfo
+endfunction
+
+function! s:restorecursor(lines, curinfo) abort
+  if a:curinfo.type ==# 'before'
+    " Cursor position is unchanged
+    return a:curinfo.cpos
+  elseif a:curinfo.type ==# 'after'
+    " Cursor line may have changed
+    let l:loff = len(a:lines) - a:curinfo.nlines
+    return [a:curinfo.cpos[0] + l:loff, a:curinfo.cpos[1]]
+  else
+    " Restore cursor position by locating the cursor character
+    let [l:lidx, l:cidx] = s:findidx(a:lines, a:curinfo.curidx, a:curinfo.curchr)
+    let l:cidx = max([l:cidx - a:curinfo.curoff, 0])
+    return [l:lidx + a:curinfo.start, l:cidx + 1]
+  endif
+endfunction
+
 function! s:options() abort
   let l:o = {}
   let l:ignore = g:sentencer_ignore + get(b:, 'sentencer_ignore', [])
@@ -166,7 +264,6 @@ endfunction
 
 function! sentencer#Format(...) abort
   let l:o = s:options()
-  let l:pos = getcurpos()
   if a:0 " from :Sentencer command
     let l:start = a:1
     let l:end = a:2
@@ -175,6 +272,7 @@ function! sentencer#Format(...) abort
     let l:end = l:start + v:count - 1
   endif
   let l:orig = getline(l:start, l:end)
+  let l:curinfo = s:trackcursor(l:orig, l:start, l:end)
 
   let l:lines = []
   for [l:indent1, l:indent, l:blank, l:list, l:para] in s:paragraphs(l:orig, l:o)
@@ -193,9 +291,10 @@ function! sentencer#Format(...) abort
   if l:orig != l:lines
     call s:deleteline(l:start, l:end)
     call s:insertline(l:start, l:lines)
+    let [l:clnum, l:ccnum] = s:restorecursor(l:lines, l:curinfo)
+    call cursor(l:clnum, l:ccnum)
   endif
 
-  call setpos('.', l:pos)
   return 0
 endfunction
 
