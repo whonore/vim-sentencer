@@ -53,7 +53,7 @@ function! s:nearestnonws(line, cidx) abort
   " matches.
   let l:cidx = match(a:line, '\S', a:cidx)
   if l:cidx == -1
-    let l:cidx = match(a:line[:a:cidx], '.*\S')
+    let l:cidx = match(a:line[:a:cidx], '.*\zs\S')
   endif
   " If there are no non-whitespace characters, treat it as a blank line.
   return l:cidx != -1 ? [a:line[l:cidx], l:cidx - a:cidx] : ['', -a:cidx]
