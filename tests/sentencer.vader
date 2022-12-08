@@ -1,7 +1,7 @@
 Given markdown (one-sentence-short):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Execute (one-sentence-short):
+Before (one-sentence-short):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -17,7 +17,7 @@ Expect markdown (one-sentence-short):
 Given markdown (one-sentence-long):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Execute (one-sentence-long):
+Before (one-sentence-long):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -34,7 +34,7 @@ Expect markdown (one-sentence-long):
 Given markdown (one-sentence-overflow-int):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Execute (one-sentence-overflow-int):
+Before (one-sentence-overflow-int):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -50,7 +50,7 @@ Expect markdown (one-sentence-overflow-int):
 Given markdown (one-sentence-overflow-float):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Execute (one-sentence-overflow-float):
+Before (one-sentence-overflow-float):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -66,7 +66,7 @@ Expect markdown (one-sentence-overflow-float):
 Given markdown (two-sentence-short):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (two-sentence-short):
+Before (two-sentence-short):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -83,7 +83,7 @@ Expect markdown (two-sentence-short):
 Given markdown (two-sentence-long):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (two-sentence-long):
+Before (two-sentence-long):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -102,7 +102,7 @@ Expect markdown (two-sentence-long):
 Given markdown (two-sentence-no-space):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (two-sentence-no-space):
+Before (two-sentence-no-space):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -120,7 +120,7 @@ Given markdown (two-paragraph):
 
   Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (two-paragraph):
+Before (two-paragraph):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -142,7 +142,7 @@ Given markdown (two-paragraph-multi-blank):
 
   Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (two-paragraph-multi-blank):
+Before (two-paragraph-multi-blank):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -166,7 +166,7 @@ Given markdown (leading-trailing-blank):
 
   <EOF>
 
-Execute (leading-trailing-blank):
+Before (leading-trailing-blank):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -174,10 +174,10 @@ Execute (leading-trailing-blank):
   let g:sentencer_overflow = 0
 
 Do (leading-trailing-blank):
-  :$s/<EOF>//\<Enter>
+  GD
   gg
   gqG
-  :$s/^$/<EOF>/\<Enter>
+  Gi<EOF>
 
 Expect markdown (leading-trailing-blank):
 
@@ -196,7 +196,7 @@ Given markdown (indent):
 
     Donec volutpat metus libero, a sollicitudin felis sollicitudin et. Etiam vehicula velit sed placerat faucibus.
 
-Execute (indent):
+Before (indent):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -229,7 +229,7 @@ Given markdown (indent2):
 
     Donec volutpat metus libero, a sollicitudin felis sollicitudin et. Etiam vehicula velit sed placerat faucibus.
 
-Execute (indent2):
+Before (indent2):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -263,7 +263,7 @@ Given markdown (list):
   Morbi nec luctus nisl, quis fringilla quam.
   -Aenean ultricies luctus sem sed commodo.
 
-Execute (list):
+Before (list):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -287,7 +287,7 @@ Expect markdown (list):
 Given markdown (custom-punctuation):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Execute (custom-punctuation):
+Before (custom-punctuation):
   set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = []
@@ -304,7 +304,7 @@ Expect markdown (custom-punctuation):
 Given markdown (ignore):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (ignore):
+Before (ignore):
   set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = ['amet']
@@ -322,7 +322,7 @@ Expect markdown (ignore):
 Given markdown (no-max-len):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (no-max-len):
+Before (no-max-len):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -339,7 +339,7 @@ Expect markdown (no-max-len):
 Given markdown (default-max-len):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (default-max-len):
+Before (default-max-len):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -372,7 +372,7 @@ Given markdown (big):
   eu, cursus sit amet augue. Sed sodales semper mauris sit amet finibus. Maecenas pharetra
   finibus dui nec pharetra.
 
-Execute (big):
+Before (big):
   set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = ['amet', 'vel']
@@ -430,7 +430,7 @@ Given markdown (long-word):
 
   Lorem ipsumdolor sitamet
 
-Execute (long-word):
+Before (long-word):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -468,7 +468,7 @@ Given markdown (max-len-inclusive):
 
   1234567 9
 
-Execute (max-len-inclusive):
+Before (max-len-inclusive):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -505,7 +505,7 @@ Given markdown (only-first-line):
   A. B.
   C. D.
 
-Execute (only-first-line):
+Before (only-first-line):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -523,7 +523,7 @@ Expect markdown (only-first-line):
 Given markdown (bound):
   Lorem ipsum dolor sit  amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (bound):
+Before (bound):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -549,10 +549,11 @@ Expect markdown (bound):
 Given markdown (bind):
   Lorem ipsum dolor sit  amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (bind):
+Before (bind):
   set tw& fo&
   let b:sentencer_bound = {}
 
+Execute (bind):
   call sentencer#bind(1, 22)
   call cursor(1, 41)
   SentencerBind
