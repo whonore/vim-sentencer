@@ -276,6 +276,23 @@ function! s:split(line, indent1, indent, list, o) abort
   return l:lines
 endfunction
 
+function! s:equptotrailing(lines1, lines2) abort
+  " Check if two sets of lines are equal ignoring differences in trailing
+  " whitespace.
+  let l:len = len(a:lines1)
+  if l:len != len(a:lines2)
+    return 0
+  endif
+  for l:idx in range(l:len)
+    let l:line1 = a:lines1[l:idx]
+    let l:line2 = a:lines2[l:idx]
+    if s:trim(l:line1, s:trim_end) != s:trim(l:line2, s:trim_end)
+      return 0
+    endif
+  endfor
+  return 1
+endfunction
+
 function! sentencer#Format(...) abort
   let l:o = s:options()
   if a:0 " from :Sentencer command
@@ -302,10 +319,13 @@ function! sentencer#Format(...) abort
       \ + map(l:para[1:], 's:indent(v:val, l:indent)')
   endfor
 
-  if l:orig != l:lines
+  if !s:equptotrailing(l:orig, l:lines)
+    let [l:clnum, l:ccnum] = s:restorecursor(l:lines, l:curinfo)
+    if l:clnum <= len(l:lines) && l:ccnum > 1 && l:ccnum > len(l:lines[l:clnum - 1])
+      let l:lines[l:clnum - 1] .= repeat(' ', l:ccnum - len(l:lines[l:clnum - 1]) - 1)
+    endif
     call s:deleteline(l:start, l:end)
     call s:insertline(l:start, l:lines)
-    let [l:clnum, l:ccnum] = s:restorecursor(l:lines, l:curinfo)
     call cursor(l:clnum, l:ccnum)
   endif
 
