@@ -15,25 +15,16 @@ let s:trim_both = 0
 let s:trim_start = 1
 let s:trim_end = 2
 
-if exists('*trim')
-  let s:ws = join(filter(map(range(256), 'nr2char(v:val)'), 'v:val =~# ''\s'''), '')
-  function! s:trim(...) abort
-    let l:txt = a:1
-    let l:dir = get(a:000, 1, s:trim_both)
-    return trim(l:txt, s:ws, l:dir)
-  endfunction
-else
-  function! s:trim(...) abort
-    let l:txt = a:1
-    let l:dir = get(a:000, 1, s:trim_both)
-    let l:pat = l:dir == s:trim_both
-      \ ? '\%(^\s\+\|\s\+$\)'
-      \ : l:dir == s:trim_start
-      \ ? '^\s\+'
-      \ : '\s\+$'
-    return substitute(l:txt, l:pat, '', 'g')
-  endfunction
-endif
+function! s:trim(...) abort
+  let l:txt = a:1
+  let l:dir = get(a:000, 1, s:trim_both)
+  let l:pat = l:dir == s:trim_both
+    \ ? '\%(^\s\+\|\s\+$\)'
+    \ : l:dir == s:trim_start
+    \ ? '^\s\+'
+    \ : '\s\+$'
+  return substitute(l:txt, l:pat, '', 'g')
+endfunction
 
 function! s:bufempty() abort
   return line('$') == 1 && empty(getline(1))
