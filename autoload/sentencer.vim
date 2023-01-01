@@ -221,19 +221,19 @@ function! s:nextBreak(line, indent, skip, o) abort
 
   " The first punctuation before or at the maximum line length. Ignore
   " punctuation that begins a list (e.g., 1.).
-  let l:maxline = l:no_max ? l:line : l:line[:l:textwidth + a:o.overflow]
+  let l:maxline = l:no_max ? l:line : strcharpart(l:line, 0, l:textwidth + a:o.overflow + 1)
   let l:idx = match(l:maxline, a:o.punctuation, a:skip)
   if l:idx != -1
     return l:idx
   endif
 
   " The line is not longer than the maximum line length.
-  if l:no_max || len(l:line) <= l:textwidth + a:o.overflow
+  if l:no_max || strdisplaywidth(l:line) <= l:textwidth + a:o.overflow
     return -1
   endif
 
   " The last space before or at the maximum line length.
-  let l:idx = match(l:line[:l:textwidth], '.*\zs' . a:o.space)
+  let l:idx = match(strcharpart(l:line, 0, l:textwidth + 1), '.*\zs' . a:o.space)
   if l:idx != -1
     return l:idx
   endif

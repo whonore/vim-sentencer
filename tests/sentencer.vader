@@ -632,6 +632,26 @@ Expect markdown (insert-break-trailing-spaces):
 Then (insert-break-trailing-spaces):
   AssertEqual [2, 17], getcurpos()[1:2]
 
+Given markdown (insert-break-multibyte):
+  Lorém ipßum dolor sit ameτ, consectetur adipiscing
+
+Before (insert-break-multibyte):
+  set tw=50 fo=t
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 50
+  let g:sentencer_overflow = 0
+
+Do (insert-break-multibyte):
+  A elït.
+
+Expect markdown (insert-break-multibyte):
+  Lorém ipßum dolor sit ameτ, consectetur adipiscing
+  elït.
+
+Then (insert-break-multibyte):
+  AssertEqual [2, 5], getcursorcharpos()[1:2]
+
 Given markdown (preserve-cursor-before):
   Lorem ipsum dolor sit amet, consectetur adipiscing
   elit.
@@ -850,3 +870,72 @@ Expect markdown (preserve-cursor-indent):
     Nulla varius
     finibus erat id
     commodo.
+
+Given markdown (preserve-cursor-multibyte):
+  Lorém ipßum dolor ßiτ améτ, conßécτéτur adipißcing
+  éliτ.
+  Uτ éléifénd puruß féliß,
+  viτaé dicτum
+  puruß
+  porτa
+  ßéd.
+
+  Morbi néc lucτuß nißl, quiß fringilla quam. Aénéan ulτriciéß lucτuß ßém
+  ßéd commodo. Nulla variuß finibuß éraτ id commodo.
+
+Before (preserve-cursor-multibyte):
+  set tw& fo&
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 20
+  let g:sentencer_overflow = 0
+
+Execute (preserve-cursor-multibyte):
+  " Space after puruß
+  call setcursorcharpos(3, 18)
+  2,9Sentencer
+  AssertEqual [4, 1], getcharpos('.')[1:2]
+
+  " ß of féliß
+  undo
+  call setcursorcharpos(3, 22)
+  2,9Sentencer
+  AssertEqual [4, 4], getcharpos('.')[1:2]
+
+  " v of viτaé
+  undo
+  call setcursorcharpos(4, 1)
+  2,9Sentencer
+  AssertEqual [4, 8], getcharpos('.')[1:2]
+
+  " Space after viτaé
+  undo
+  call setcursorcharpos(4, 6)
+  2,9Sentencer
+  AssertEqual [4, 13], getcharpos('.')[1:2]
+
+  " Blank line between paragraphs
+  undo
+  call setcursorcharpos(8, 1)
+  2,9Sentencer
+  AssertEqual [6, 1], getcharpos('.')[1:2]
+
+  " u of quam
+  undo
+  call setcursorcharpos(9, 40)
+  2,9Sentencer
+  AssertEqual [9, 2], getcharpos('.')[1:2]
+
+Expect markdown (preserve-cursor-multibyte):
+  Lorém ipßum dolor ßiτ améτ, conßécτéτur adipißcing
+  éliτ.
+  Uτ éléifénd puruß
+  féliß, viτaé dicτum
+  puruß porτa ßéd.
+
+  Morbi néc lucτuß
+  nißl, quiß fringilla
+  quam.
+  Aénéan ulτriciéß
+  lucτuß ßém
+  ßéd commodo. Nulla variuß finibuß éraτ id commodo.
