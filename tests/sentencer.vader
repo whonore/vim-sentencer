@@ -1,7 +1,7 @@
 Given markdown (one-sentence-short):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Execute (one-sentence-short):
+Before (one-sentence-short):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -17,7 +17,7 @@ Expect markdown (one-sentence-short):
 Given markdown (one-sentence-long):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Execute (one-sentence-long):
+Before (one-sentence-long):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -34,7 +34,7 @@ Expect markdown (one-sentence-long):
 Given markdown (one-sentence-overflow-int):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Execute (one-sentence-overflow-int):
+Before (one-sentence-overflow-int):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -50,7 +50,7 @@ Expect markdown (one-sentence-overflow-int):
 Given markdown (one-sentence-overflow-float):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Execute (one-sentence-overflow-float):
+Before (one-sentence-overflow-float):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -66,7 +66,7 @@ Expect markdown (one-sentence-overflow-float):
 Given markdown (two-sentence-short):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (two-sentence-short):
+Before (two-sentence-short):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -83,7 +83,7 @@ Expect markdown (two-sentence-short):
 Given markdown (two-sentence-long):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (two-sentence-long):
+Before (two-sentence-long):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -102,7 +102,7 @@ Expect markdown (two-sentence-long):
 Given markdown (two-sentence-no-space):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (two-sentence-no-space):
+Before (two-sentence-no-space):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -120,7 +120,7 @@ Given markdown (two-paragraph):
 
   Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (two-paragraph):
+Before (two-paragraph):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -142,7 +142,7 @@ Given markdown (two-paragraph-multi-blank):
 
   Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (two-paragraph-multi-blank):
+Before (two-paragraph-multi-blank):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -166,7 +166,7 @@ Given markdown (leading-trailing-blank):
 
   <EOF>
 
-Execute (leading-trailing-blank):
+Before (leading-trailing-blank):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -174,10 +174,10 @@ Execute (leading-trailing-blank):
   let g:sentencer_overflow = 0
 
 Do (leading-trailing-blank):
-  :$s/<EOF>//\<Enter>
+  GD
   gg
   gqG
-  :$s/^$/<EOF>/\<Enter>
+  Gi<EOF>
 
 Expect markdown (leading-trailing-blank):
 
@@ -196,7 +196,7 @@ Given markdown (indent):
 
     Donec volutpat metus libero, a sollicitudin felis sollicitudin et. Etiam vehicula velit sed placerat faucibus.
 
-Execute (indent):
+Before (indent):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -229,7 +229,7 @@ Given markdown (indent2):
 
     Donec volutpat metus libero, a sollicitudin felis sollicitudin et. Etiam vehicula velit sed placerat faucibus.
 
-Execute (indent2):
+Before (indent2):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -263,7 +263,7 @@ Given markdown (list):
   Morbi nec luctus nisl, quis fringilla quam.
   -Aenean ultricies luctus sem sed commodo.
 
-Execute (list):
+Before (list):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -287,7 +287,7 @@ Expect markdown (list):
 Given markdown (custom-punctuation):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-Execute (custom-punctuation):
+Before (custom-punctuation):
   set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = []
@@ -304,7 +304,7 @@ Expect markdown (custom-punctuation):
 Given markdown (ignore):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (ignore):
+Before (ignore):
   set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = ['amet']
@@ -322,7 +322,7 @@ Expect markdown (ignore):
 Given markdown (no-max-len):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (no-max-len):
+Before (no-max-len):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -339,7 +339,7 @@ Expect markdown (no-max-len):
 Given markdown (default-max-len):
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (default-max-len):
+Before (default-max-len):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -372,7 +372,7 @@ Given markdown (big):
   eu, cursus sit amet augue. Sed sodales semper mauris sit amet finibus. Maecenas pharetra
   finibus dui nec pharetra.
 
-Execute (big):
+Before (big):
   set tw& fo&
   let g:sentencer_punctuation = '.,'
   let g:sentencer_ignore = ['amet', 'vel']
@@ -430,7 +430,7 @@ Given markdown (long-word):
 
   Lorem ipsumdolor sitamet
 
-Execute (long-word):
+Before (long-word):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -468,7 +468,7 @@ Given markdown (max-len-inclusive):
 
   1234567 9
 
-Execute (max-len-inclusive):
+Before (max-len-inclusive):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -505,7 +505,7 @@ Given markdown (only-first-line):
   A. B.
   C. D.
 
-Execute (only-first-line):
+Before (only-first-line):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -523,7 +523,7 @@ Expect markdown (only-first-line):
 Given markdown (bound):
   Lorem ipsum dolor sit  amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (bound):
+Before (bound):
   set tw& fo&
   let g:sentencer_punctuation = '.'
   let g:sentencer_ignore = []
@@ -549,10 +549,11 @@ Expect markdown (bound):
 Given markdown (bind):
   Lorem ipsum dolor sit  amet, consectetur adipiscing elit. Nam eleifend mauris et lectus rhoncus, at feugiat sapien euismod.
 
-Execute (bind):
+Before (bind):
   set tw& fo&
   let b:sentencer_bound = {}
 
+Execute (bind):
   call sentencer#bind(1, 22)
   call cursor(1, 41)
   SentencerBind
@@ -570,3 +571,371 @@ Execute (bind):
   Assert !has_key(b:sentencer_bound, '\V\<sit\zs\s\+\zeamet\>')
   Assert !has_key(b:sentencer_bound, '\V\<consectetur\zs\s\+\zeadipiscing\>')
   Assert !has_key(b:sentencer_bound, '\V\<elit.\zs\s\+\zeNam\>')
+
+Given markdown (insert-break):
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+
+Before (insert-break):
+  set tw=50 fo=t
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 50
+  let g:sentencer_overflow = 0
+
+Do (insert-break):
+  A elit.
+
+Expect markdown (insert-break):
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
+
+Then (insert-break):
+  AssertEqual [2, 5], getcurpos()[1:2]
+
+Given markdown (insert-break-over):
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+
+Before (insert-break-over):
+  set tw=50 fo=t
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 49
+  let g:sentencer_overflow = 1
+
+Do (insert-break-over):
+  A elit.
+
+Expect markdown (insert-break-over):
+  Lorem ipsum dolor sit amet, consectetur
+  adipiscing elit.
+
+Then (insert-break-over):
+  AssertEqual [2, 16], getcurpos()[1:2]
+
+Given markdown (insert-break-trailing-spaces):
+  Lorem ipsum dolor sit amet, consectetur  adipiscing
+
+Before (insert-break-trailing-spaces):
+  set tw=50 fo=t
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 49
+  let g:sentencer_overflow = 1
+
+Do (insert-break-trailing-spaces):
+  A  elit.
+
+Expect markdown (insert-break-trailing-spaces):
+  Lorem ipsum dolor sit amet, consectetur
+  adipiscing  elit.
+
+Then (insert-break-trailing-spaces):
+  AssertEqual [2, 17], getcurpos()[1:2]
+
+Given markdown (insert-break-multibyte):
+  Lorém ipßum dolor sit ameτ, consectetur adipiscing
+
+Before (insert-break-multibyte):
+  set tw=50 fo=t
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 50
+  let g:sentencer_overflow = 0
+
+Do (insert-break-multibyte):
+  A elït.
+
+Expect markdown (insert-break-multibyte):
+  Lorém ipßum dolor sit ameτ, consectetur adipiscing
+  elït.
+
+Then (insert-break-multibyte):
+  AssertEqual [2, 5], getcursorcharpos()[1:2]
+
+Given markdown (preserve-cursor-before):
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
+  Ut eleifend purus felis,
+  vitae dictum
+  purus
+  porta
+  sed.
+
+  Morbi nec luctus nisl, quis fringilla quam. Aenean ultricies luctus sem
+  sed commodo. Nulla varius finibus erat id commodo.
+
+Before (preserve-cursor-before):
+  set tw& fo&
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 20
+  let g:sentencer_overflow = 0
+
+Execute (preserve-cursor-before):
+  " L of Lorem
+  call cursor(1, 1)
+  3,$Sentencer
+  AssertEqual [1, 1], getpos('.')[1:2]
+
+  " s of sit
+  undo
+  call cursor(1, 19)
+  3,$Sentencer
+  AssertEqual [1, 19], getpos('.')[1:2]
+
+  " i of elit
+  undo
+  call cursor(2, 3)
+  3,$Sentencer
+  AssertEqual [2, 3], getpos('.')[1:2]
+
+Expect markdown (preserve-cursor-before):
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
+  Ut eleifend purus
+  felis, vitae dictum
+  purus porta sed.
+
+  Morbi nec luctus
+  nisl, quis fringilla
+  quam.
+  Aenean ultricies
+  luctus sem sed
+  commodo.
+  Nulla varius finibus
+  erat id commodo.
+
+Given markdown (preserve-cursor-after):
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
+  Ut eleifend purus felis,
+  vitae dictum
+  purus
+  porta
+  sed.
+
+  Morbi nec luctus nisl, quis fringilla quam. Aenean ultricies luctus sem
+  sed commodo. Nulla varius finibus erat id commodo.
+
+Before (preserve-cursor-after):
+  set tw& fo&
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 20
+  let g:sentencer_overflow = 0
+
+Execute (preserve-cursor-after):
+  " d of sed
+  call cursor(10, 3)
+  1,9Sentencer
+  AssertEqual [14, 3], getpos('.')[1:2]
+
+  " d of commodo
+  undo
+  call cursor(10, 10)
+  1,9Sentencer
+  AssertEqual [14, 10], getpos('.')[1:2]
+
+Expect markdown (preserve-cursor-after):
+  Lorem ipsum dolor
+  sit amet,
+  consectetur
+  adipiscing elit.
+  Ut eleifend purus
+  felis, vitae dictum
+  purus porta sed.
+
+  Morbi nec luctus
+  nisl, quis fringilla
+  quam.
+  Aenean ultricies
+  luctus sem
+  sed commodo. Nulla varius finibus erat id commodo.
+
+Given markdown (preserve-cursor-inside):
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
+  Ut eleifend purus felis,
+  vitae dictum
+  purus
+  porta
+  sed.
+
+  Morbi nec luctus nisl, quis fringilla quam. Aenean ultricies luctus sem
+  sed commodo. Nulla varius finibus erat id commodo.
+
+Before (preserve-cursor-inside):
+  set tw& fo&
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 20
+  let g:sentencer_overflow = 0
+
+Execute (preserve-cursor-inside):
+  " Space after purus
+  call cursor(3, 18)
+  2,9Sentencer
+  AssertEqual [4, 1], getpos('.')[1:2]
+
+  " s of felis
+  undo
+  call cursor(3, 22)
+  2,9Sentencer
+  AssertEqual [4, 4], getpos('.')[1:2]
+
+  " v of vitae
+  undo
+  call cursor(4, 1)
+  2,9Sentencer
+  AssertEqual [4, 8], getpos('.')[1:2]
+
+  " Space after vitae
+  undo
+  call cursor(4, 6)
+  2,9Sentencer
+  AssertEqual [4, 13], getpos('.')[1:2]
+
+  " Blank line between paragraphs
+  undo
+  call cursor(8, 1)
+  2,9Sentencer
+  AssertEqual [6, 1], getpos('.')[1:2]
+
+  " u of quam
+  undo
+  call cursor(9, 40)
+  2,9Sentencer
+  AssertEqual [9, 2], getpos('.')[1:2]
+
+Expect markdown (preserve-cursor-inside):
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
+  Ut eleifend purus
+  felis, vitae dictum
+  purus porta sed.
+
+  Morbi nec luctus
+  nisl, quis fringilla
+  quam.
+  Aenean ultricies
+  luctus sem
+  sed commodo. Nulla varius finibus erat id commodo.
+
+Given markdown (preserve-cursor-indent):
+  Lorem ipsum dolor sit amet, consectetur adipiscing
+  elit.
+  Ut eleifend purus felis,
+  vitae dictum
+  purus
+  porta
+  sed.
+
+    Morbi nec luctus nisl, quis fringilla quam. Aenean ultricies luctus sem
+  sed commodo. Nulla varius finibus erat id commodo.
+
+Before (preserve-cursor-indent):
+  set tw& fo&
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 20
+  let g:sentencer_overflow = 0
+
+Execute (preserve-cursor-indent):
+  " last n of Aenean
+  call cursor(9, 52)
+  1,$Sentencer
+  AssertEqual [12, 8], getpos('.')[1:2]
+
+  " N of Nulla
+  undo
+  call cursor(10, 14)
+  1,$Sentencer
+  AssertEqual [15, 3], getpos('.')[1:2]
+
+Expect markdown (preserve-cursor-indent):
+  Lorem ipsum dolor
+  sit amet,
+  consectetur
+  adipiscing elit.
+  Ut eleifend purus
+  felis, vitae dictum
+  purus porta sed.
+
+    Morbi nec luctus
+    nisl, quis
+    fringilla quam.
+    Aenean ultricies
+    luctus sem sed
+    commodo.
+    Nulla varius
+    finibus erat id
+    commodo.
+
+Given markdown (preserve-cursor-multibyte):
+  Lorém ipßum dolor ßiτ améτ, conßécτéτur adipißcing
+  éliτ.
+  Uτ éléifénd puruß féliß,
+  viτaé dicτum
+  puruß
+  porτa
+  ßéd.
+
+  Morbi néc lucτuß nißl, quiß fringilla quam. Aénéan ulτriciéß lucτuß ßém
+  ßéd commodo. Nulla variuß finibuß éraτ id commodo.
+
+Before (preserve-cursor-multibyte):
+  set tw& fo&
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 20
+  let g:sentencer_overflow = 0
+
+Execute (preserve-cursor-multibyte):
+  " Space after puruß
+  call setcursorcharpos(3, 18)
+  2,9Sentencer
+  AssertEqual [4, 1], getcharpos('.')[1:2]
+
+  " ß of féliß
+  undo
+  call setcursorcharpos(3, 22)
+  2,9Sentencer
+  AssertEqual [4, 4], getcharpos('.')[1:2]
+
+  " v of viτaé
+  undo
+  call setcursorcharpos(4, 1)
+  2,9Sentencer
+  AssertEqual [4, 8], getcharpos('.')[1:2]
+
+  " Space after viτaé
+  undo
+  call setcursorcharpos(4, 6)
+  2,9Sentencer
+  AssertEqual [4, 13], getcharpos('.')[1:2]
+
+  " Blank line between paragraphs
+  undo
+  call setcursorcharpos(8, 1)
+  2,9Sentencer
+  AssertEqual [6, 1], getcharpos('.')[1:2]
+
+  " u of quam
+  undo
+  call setcursorcharpos(9, 40)
+  2,9Sentencer
+  AssertEqual [9, 2], getcharpos('.')[1:2]
+
+Expect markdown (preserve-cursor-multibyte):
+  Lorém ipßum dolor ßiτ améτ, conßécτéτur adipißcing
+  éliτ.
+  Uτ éléifénd puruß
+  féliß, viτaé dicτum
+  puruß porτa ßéd.
+
+  Morbi néc lucτuß
+  nißl, quiß fringilla
+  quam.
+  Aénéan ulτriciéß
+  lucτuß ßém
+  ßéd commodo. Nulla variuß finibuß éraτ id commodo.
