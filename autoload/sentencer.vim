@@ -39,6 +39,10 @@ function! s:insertline(start, text) abort
   endif
 endfunction
 
+function! s:charat(str, cidx) abort
+  return nr2char(strgetchar(a:str[a:cidx:], 0))
+endfunction
+
 function! s:nearestnonws(line, cidx) abort
   " Find the nearest non-whitespace character to `cidx`, preferring later
   " matches.
@@ -47,7 +51,7 @@ function! s:nearestnonws(line, cidx) abort
     let l:cidx = match(a:line[:a:cidx], '.*\zs\S')
   endif
   " If there are no non-whitespace characters, treat it as a blank line.
-  return l:cidx != -1 ? [a:line[l:cidx], l:cidx - a:cidx] : ['', -a:cidx]
+  return l:cidx != -1 ? [s:charat(a:line, l:cidx), l:cidx - a:cidx] : ['', -a:cidx]
 endfunction
 
 function! s:matchidx(lines, lidx, cidx, chr) abort
