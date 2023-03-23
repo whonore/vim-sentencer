@@ -652,6 +652,48 @@ Expect markdown (insert-break-multibyte):
 Then (insert-break-multibyte):
   AssertEqual [2, 5], getcursorcharpos()[1:2]
 
+Given markdown (insert-break-later-line):
+
+  Lorem. ipsum dolor sit amet, consectetur adipiscing
+
+Before (insert-break-later-line):
+  set tw=51 fo=t
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 51
+  let g:sentencer_overflow = 0
+
+Do (insert-break-later-line):
+  GA elit.
+
+Expect markdown (insert-break-later-line):
+
+  Lorem.
+  ipsum dolor sit amet, consectetur adipiscing elit.
+
+Then (insert-break-later-line):
+  AssertEqual [3, 50], getcurpos()[1:2]
+
+Given markdown (insert-break-multibyte-end):
+  Lorém. ipßum dolor sit ameτ, consectetur adipisciñ
+
+Before (insert-break-multibyte-end):
+  set tw=50 fo=t
+  let g:sentencer_punctuation = '.'
+  let g:sentencer_ignore = []
+  let g:sentencer_textwidth = 50
+  let g:sentencer_overflow = 0
+
+Do (insert-break-multibyte-end):
+  Ag
+
+Expect markdown (insert-break-multibyte-end):
+  Lorém.
+  ipßum dolor sit ameτ, consectetur adipisciñg
+
+Then (insert-break-multibyte-end):
+  AssertEqual [2, 44], getcursorcharpos()[1:2]
+
 Given markdown (preserve-cursor-before):
   Lorem ipsum dolor sit amet, consectetur adipiscing
   elit.

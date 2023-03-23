@@ -39,6 +39,10 @@ function! s:insertline(start, text) abort
   endif
 endfunction
 
+function! s:charat(str, cidx) abort
+  return nr2char(strgetchar(a:str[a:cidx:], 0))
+endfunction
+
 function! s:nearestnonws(line, cidx) abort
   " Find the nearest non-whitespace character to `cidx`, preferring later
   " matches.
@@ -47,7 +51,7 @@ function! s:nearestnonws(line, cidx) abort
     let l:cidx = match(a:line[:a:cidx], '.*\zs\S')
   endif
   " If there are no non-whitespace characters, treat it as a blank line.
-  return l:cidx != -1 ? [a:line[l:cidx], l:cidx - a:cidx] : ['', -a:cidx]
+  return l:cidx != -1 ? [s:charat(a:line, l:cidx), l:cidx - a:cidx] : ['', -a:cidx]
 endfunction
 
 function! s:matchidx(lines, lidx, cidx, chr) abort
@@ -135,6 +139,17 @@ function! s:restorecursor(lines, curinfo) abort
     let l:cidx = max([l:cidx - a:curinfo.curoff, 0])
     return [l:lidx + a:curinfo.start, l:cidx + 1]
   endif
+endfunction
+
+function! s:padtrailing(lines, curinfo, lnum, cnum) abort
+  " Pad with trailing spaces if necessary
+  if a:curinfo.type ==# 'inside'
+    let l:lidx = a:lnum - a:curinfo.start
+    if l:lidx <= len(a:lines) && a:cnum > 1 && a:cnum > len(a:lines[l:lidx])
+      let a:lines[l:lidx] .= repeat(' ', a:cnum - len(a:lines[l:lidx]) - 1)
+    endif
+  endif
+  return a:lines
 endfunction
 
 function! s:options() abort
@@ -312,9 +327,7 @@ function! sentencer#Format(...) abort
 
   if !s:equptotrailing(l:orig, l:lines)
     let [l:clnum, l:ccnum] = s:restorecursor(l:lines, l:curinfo)
-    if l:clnum <= len(l:lines) && l:ccnum > 1 && l:ccnum > len(l:lines[l:clnum - 1])
-      let l:lines[l:clnum - 1] .= repeat(' ', l:ccnum - len(l:lines[l:clnum - 1]) - 1)
-    endif
+    let l:lines = s:padtrailing(l:lines, l:curinfo, l:clnum, l:ccnum)
     call s:deleteline(l:start, l:end)
     call s:insertline(l:start, l:lines)
     call cursor(l:clnum, l:ccnum)
